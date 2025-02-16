@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 
 namespace Net1728Group2MVC.Controllers
 {
-    public class AccountController : Controller
+    public class AuthController : Controller
     {
         private readonly IAccountService _accountService;
 
-        public AccountController(IAccountService accountService)
+        public AuthController(IAccountService accountService)
         {
             _accountService = accountService;
         }
@@ -39,7 +39,10 @@ namespace Net1728Group2MVC.Controllers
                     HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
                     HttpContext.Session.SetString("IsAuthenticated", "True");
 
-                    return RedirectToAction("Index", "Home");
+                    if (user.AccountRole == 1 ) return RedirectToAction("Category", "Staff");
+                    else if (user.AccountRole == 2) return RedirectToAction("News", "Lecturer");
+                    else if (user.AccountRole == 0) return RedirectToAction("Account", "Admin");
+
                 }
 
                 ViewBag.ErrorLoginMessage = "Invalid email or password!";
@@ -53,7 +56,7 @@ namespace Net1728Group2MVC.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Auth");
         }
 
     }

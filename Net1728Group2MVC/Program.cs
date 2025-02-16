@@ -2,6 +2,7 @@ using DAL;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Net1728Group2MVC;
+using Net1728Group2MVC.Middleware;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,7 @@ if (!app.Environment.IsDevelopment())
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseMiddleware<Middleware>();
 
 app.UseRouting();
 
@@ -39,7 +41,33 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=login}/{id?}");
+    pattern: "{controller=Auth}/{action=login}/{id?}");
+
+app.MapControllerRoute(
+    name: "AccountManagement",
+    pattern: "{controller=Admin}/{action=Account}/{id?}");
+
+app.MapControllerRoute(
+    name: "ReportManagement",
+    pattern: "{controller=Admin}/{action=Report}/{id?}");
+
+app.MapControllerRoute(
+    name: "CategoryManagement",
+    pattern: "{controller=Staff}/{action=Category}/{id?}");
+
+app.MapControllerRoute(
+    name: "NewsManagement",
+    pattern: "{controller=Staff}/{action=News}/{id?}");
+
+
+app.MapControllerRoute(
+    name: "ProfileManagement",
+    pattern: "{controller=Staff}/{action=Profile}/{id?}");
+
+app.MapControllerRoute(
+    name: "ViewNews",
+    pattern: "{controller=Lecturer}/{action=News}/{id?}");
+
 
 app.Run();
 
