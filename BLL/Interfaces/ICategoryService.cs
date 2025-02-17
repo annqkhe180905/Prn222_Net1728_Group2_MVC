@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using BLL.DTOs;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace BLL.Interfaces
 {
     public interface ICategoryService
     {
-        Task<List<Category>> GetAll();
+        Task<bool> AddAsync(CategoryVM incomingCategory);
+        Task<bool> UpdateAsync(CategoryVM editCategory);
+        Task<IEnumerable<CategoryVM>> GetAllAsync();
+        Task<bool> RemoveAsync(int id);
     }
 }

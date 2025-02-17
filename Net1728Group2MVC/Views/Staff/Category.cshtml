@@ -1,13 +1,134 @@
-﻿@{
+﻿@using BLL.DTOs
+@{
     // Layout = "~/Views.Shared/_Layout.cshtml";
 }
-<div class="w-100 vh-100 d-flex flex-column">
-    <div class="flex-sm-fill w-25">
-        <div>
-            <p>Đời sống</p>
-
+@model CategoryModal
+<div class="border" style="border-radius: 15px;">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center p-2">
+            <h1>Category Management</h1>
+            <button type="button" class="btn btn-dark h-100 rounded p-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <span class="text-white fs-5 fw-bold">Add</span>
+            </button>
         </div>
     </div>
-    <div class="">
+    <div>
+        <table class="table table-hover">
+            <thead class="bg-black bg-opacity-10">
+                <tr class="align-content-center">
+                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Category Name</th>
+                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Description</th>
+                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Active</th>
+                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Categories == null)
+                {
+                    return;
+                }
+                @foreach (var category in Model.Categories)
+                {
+                    <tr class="category-item">
+                        <td class="text-center fw-bold fs-5 h-auto" style="vertical-align: middle!important">@category.CategoryName</td>
+                        <td class="fs-5" style="vertical-align: middle!important">@category.CategoryDesciption</td>
+                        <td class="text-center fs-5 " style="vertical-align: middle!important;">
+                            <div class="p-2 rounded-3" style="@(category.IsActive == true ? "background-color:lightgreen" : "background-color:lightcoral")">
+                                <label style="@(category.IsActive == true ? "color:darkgreen" : "color:darkred")">
+                                    @(category.IsActive == true ? "Active" : "Inactive")
+                                </label>
+                            </div>
+                        </td>
+                        <td class="align-content-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="button" class="btn deleteCategoryButton" data-id="@category.CategoryId">
+                                    <i class="d-block bi bi-trash3 fs-3"></i>
+                                </button>
+                                <button type="button" class="btn"
+                                        data-bs-toggle="modal"
+                                        data-id="@category.CategoryId"
+                                        data-name="@category.CategoryName"
+                                        data-description="@category.CategoryDesciption"
+                                        data-isActive="@category.IsActive"
+                                        data-bs-target="#editCategory">
+
+                                    <i class="bi bi-pencil-square fs-3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="addCategoryModal">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="fs-4 fw-bold">Add New Category</label>
+                </div>
+                <div class="modal-body">
+                    <form id="categoryForm" method="post">
+                        <label class="mb-2 fs-5">Category Name</label>
+
+                        <input asp-for="CategoryName" class="p-3 border rounded-3 w-100 fs-5 mb-2"
+                               value=""
+                               placeholder="New category name"
+                               required maxlength="20" />
+
+                        <label class="form-label mb-2 fs-5">Description</label>
+
+                        <textarea asp-for="CategoryDesciption"
+                                  class="form-control p-3 border rounded-3 w-100 fs-5"
+                                  placeholder="Category description"
+                                  maxlength="200"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary p-2" form="categoryForm" id="saveCategoryButton">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editCategory">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="fs-4 fw-bold">Edit Category</label>
+                </div>
+                <div class="modal-body">
+                    <form id="categoryEditForm" method="post">
+                        <label class="mb-2 fs-5">Category Name</label>
+                        <input type="hidden" asp-for="CategoryId" id="editCateId"/>
+                        <input asp-for="CategoryName"
+                               class="p-3 border rounded-3 w-100 fs-5 mb-2"
+                               id="editCateName"
+                               value=""
+                               placeholder="New category name "
+                               required maxlength="20" />
+
+                        <label class="form-label mb-2 fs-5">Description</label>
+
+                        <textarea asp-for="CategoryDesciption" id="editCateDescription"
+                                  class="form-control p-3 border rounded-3 w-100 fs-5 mb-2"
+                                  placeholder="Category description"
+                                  maxlength="200"></textarea>
+
+                        <select asp-for="IsActive" class="w-50 p-2 editSelect">
+                            <option value="True">Active</option>
+                            <option value="False">Inactive</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary p-2" form="categoryForm" id="editCategoryButton">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script src="~/js/category.js"></script>

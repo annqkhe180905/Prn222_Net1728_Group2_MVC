@@ -9,6 +9,12 @@ namespace DAL.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task<IEnumerable<Category>> GetAll();
+        Task<bool> AddAsync(Category newCategory);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task<Category>? GetLastItem();
+
+        Task<Category>? FindAsync(int id);
+        Task<bool> RemoveAsync(Category category);
+        Task<bool> UpdateAsync(Category existCategory);
     }
 }

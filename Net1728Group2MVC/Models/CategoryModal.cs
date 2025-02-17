@@ -1,4 +1,6 @@
-﻿namespace Net1728Group2MVC.Models
+﻿using BLL.DTOs;
+
+namespace Net1728Group2MVC.Models
 {
     public class CategoryModal
     {
@@ -11,5 +13,7 @@
         public short? ParentCategoryId { get; set; }
 
         public bool? IsActive { get; set; }
+
+        public IEnumerable<CategoryVM>? Categories { get; set; }
     }
 }

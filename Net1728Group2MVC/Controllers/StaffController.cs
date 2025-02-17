@@ -1,14 +1,19 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
+using BLL.DTOs;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Net1728Group2MVC.Models;
 
 namespace Net1728Group2MVC.Controllers
 {
     public class StaffController : BaseController
     {
         private readonly ICategoryService _categoryService;
-        public StaffController(ICategoryService categoryService)
+        private readonly IMapper _mapper;
+        public StaffController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
         public IActionResult News()
         {
@@ -16,8 +21,11 @@ namespace Net1728Group2MVC.Controllers
         }
         public async Task<IActionResult> Category()
         {
-            var listCate = await _categoryService.GetAll();
-            return View();
+            var categoryModal = new CategoryModal()
+            {
+                Categories = await _categoryService.GetAllAsync()
+            };
+            return View(categoryModal);
         }
         public IActionResult Profile()
         {
