@@ -31,5 +31,5 @@ public class NewsArticle
 
     public virtual SystemAccount? CreatedBy { get; set; }
 
-    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+    public virtual ICollection<TagVM> Tags { get; set; } = new List<TagVM>();
 }

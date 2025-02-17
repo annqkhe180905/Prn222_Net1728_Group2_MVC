@@ -27,7 +27,7 @@ namespace Net1728Group2MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Tag newsTag)
+        public async Task<IActionResult> Create(TagVM newsTag)
         {
             if (ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace Net1728Group2MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Tag newsTag)
+        public async Task<IActionResult> Edit(int id, TagVM newsTag)
         {
             if (id != newsTag.Id)
             {

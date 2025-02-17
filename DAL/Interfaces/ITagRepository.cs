@@ -9,7 +9,7 @@ namespace DAL.Interfaces
 {
     public interface ITagRepository
     {
-        List<Tag> GetTags();
+        List<Tag> GetAllTags();
         void CreateTag(Tag tag);
         void UpdateTag(Tag tag);
         void DeleteTag(int tagId);

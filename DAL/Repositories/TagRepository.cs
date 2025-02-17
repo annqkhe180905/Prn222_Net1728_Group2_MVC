@@ -18,7 +18,7 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public void CreateTag(Tag tag)
+        public void CreateTag(TagVM tag)
         {
             try
             {
@@ -55,9 +55,9 @@ namespace DAL.Repositories
             }
         }
 
-        public List<Tag> GetTags()
+        public List<TagVM> GetTags()
         {
-            List<Tag> tagsList = new List<Tag>();
+            List<TagVM> tagsList = new List<TagVM>();
             try
             {
                 tagsList = _context.Tags.ToList();
@@ -69,7 +69,7 @@ namespace DAL.Repositories
             return tagsList;
         }
 
-        public void UpdateTag(Tag tag)
+        public void UpdateTag(TagVM tag)
         {
             try
             {

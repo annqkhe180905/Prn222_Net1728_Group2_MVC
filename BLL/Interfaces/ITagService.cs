@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using BLL.DTOs;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace BLL.Interfaces
 {
     public interface ITagService
     {
-        List<Tag> GetTags();
-        void CreateTag(Tag tag);
-        void UpdateTag(Tag tag);
+        List<TagVM> GetAllTags();
+        TagVM GetTagById(int id);
+        void CreateTag(TagVM tag);
+        void UpdateTag(TagVM tag);
         void DeleteTag(int tagId);
     }
 }

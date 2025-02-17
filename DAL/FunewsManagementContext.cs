@@ -23,7 +23,7 @@ public partial class FunewsManagementContext : DbContext
 
     public virtual DbSet<SystemAccount> SystemAccounts { get; set; }
 
-    public virtual DbSet<Tag> Tags { get; set; }
+    public virtual DbSet<TagVM> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -71,7 +71,7 @@ public partial class FunewsManagementContext : DbContext
             entity.HasMany(d => d.Tags).WithMany(p => p.NewsArticles)
                 .UsingEntity<Dictionary<string, object>>(
                     "NewsTag",
-                    r => r.HasOne<Tag>().WithMany()
+                    r => r.HasOne<TagVM>().WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_NewsTag_Tag"),
@@ -104,7 +104,7 @@ public partial class FunewsManagementContext : DbContext
             entity.Property(e => e.AccountPassword).HasMaxLength(70);
         });
 
-        modelBuilder.Entity<Tag>(entity =>
+        modelBuilder.Entity<TagVM>(entity =>
         {
             entity.HasKey(e => e.TagId).HasName("PK_HashTag");
 

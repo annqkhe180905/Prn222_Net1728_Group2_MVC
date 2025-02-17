@@ -1,4 +1,6 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
+using BLL.DTOs;
+using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
@@ -13,17 +15,39 @@ namespace BLL.Services
     public class TagService : ITagService
     {
         private readonly ITagRepository _tagRepository;
+        private readonly IMapper _mapper;
 
-        public TagService(ITagRepository tagRepository)
+        public TagService(ITagRepository tagRepository, IMapper mapper)
         {
             _tagRepository = tagRepository;
+            _mapper = mapper;
         }
 
-        public void CreateTag(Tag tag) => _tagRepository.CreateTag(tag);
-        public void DeleteTag(int tagId) => _tagRepository.DeleteTag(tagId);
+        public void CreateTag(TagVM tagVM)
+        {
+            var newsTag = _mapper.Map<Tag>(tagVM);
+            _tagRepository.CreateTag(newsTag);
+        }
+        public void DeleteTag(int tagId)
+        {
+            _tagRepository.DeleteTag(tagId);
+        }
 
-        public List<Tag> GetTags() => _tagRepository.GetTags();
+        public List<TagVM> GetAllTags()
+        {
+            var newsTags = _tagRepository.GetAllTags();
+            return _mapper.Map<List<TagVM>>(newsTags);  
+        }
 
-        public void UpdateTag(Tag tag) => _tagRepository.UpdateTag(tag);
+        public TagVM GetTagById(int id)
+        {
+            return _mapper.Map<TagVM>(id);
+        }
+
+        public void UpdateTag(TagVM tagVM)
+        {
+            var newsTag = _mapper.Map<Tag>(tagVM);
+            _tagRepository.UpdateTag(newsTag);
+        }
     }
 }
