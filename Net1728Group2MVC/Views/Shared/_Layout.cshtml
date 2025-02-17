@@ -33,9 +33,12 @@
                         }
                     </div>
                 </div>
-                <form asp-action="Logout" asp-controller="Auth" method="post">
-                    <button class="btn btn-danger btn-sm" type="submit">Logout</button>
-                </form>
+                @if (ViewBag.UserName != null)
+                {
+                    <form asp-action="Logout" asp-controller="Auth" method="post">
+                        <button class="btn btn-danger btn-sm" type="submit">Logout</button>
+                    </form>
+                }
             </div>
         </div>
 
@@ -48,22 +51,23 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="mt-4">
                                 <div class="d-flex justify-content-center">
-                                    @if (ViewBag.Role == 1)
-                                    {
-                                        <button class="custom-btn mx-2">Category Management</button>
-                                        <button class="custom-btn mx-2">News Management</button>
-                                        <button class="custom-btn mx-2">Profile Management</button>
-                                    }
-                                    else if (ViewBag.Role == 2)
-                                    {
-                                        <h1 class="fw-bold text-white">News article</h1>
-                                    }
-                                    else if (ViewBag.Role == 0)
-                                    {
-                                        <button class="custom-btn mx-2">System Account Management</button>
-                                        <button class="custom-btn mx-2">Report Management</button>
-                                    }
-
+                                    <form method="get">
+                                        @if (ViewBag.Role == 1)
+                                        {
+                                            <button class="custom-btn mx-2">Category Management</button>
+                                            <button class="custom-btn mx-2">News Management</button>
+                                            <button class="custom-btn mx-2">Profile Management</button>
+                                        }
+                                        else if (ViewBag.Role == 2)
+                                        {
+                                            <h1 class="fw-bold text-white">News article</h1>
+                                        }
+                                        else if (ViewBag.Role == 0)
+                                        {
+                                            <button class="custom-btn mx-2" asp-controller="Admin" asp-action="Account" type="submit">System Account Management</button>
+                                            <button class="custom-btn mx-2" asp-controller="Admin" asp-action="Report" type="submit">Report Management</button>
+                                        }
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +77,18 @@
 
             <div class="container-xl px-4 mt-n10">
                 <div class="card">
-                    <div class="card-header">Page Header Overlap</div>
+                    @if (ViewBag.Header != null)
+                    {
+                        <h3 class="card-header"> @ViewBag.Header</h3>
+
+                    }
+                    else
+                    {
+                        <h3 class="card-header"> View News Article</h3>
+
+                    }
+
+
                     <div class="card-body">
                         @RenderBody()
                     </div>
