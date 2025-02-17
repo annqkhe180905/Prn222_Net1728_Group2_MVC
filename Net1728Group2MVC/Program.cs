@@ -44,6 +44,10 @@ app.MapControllerRoute(
     pattern: "{controller=Auth}/{action=login}/{id?}");
 
 app.MapControllerRoute(
+    name: "home",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "AccountManagement",
     pattern: "{controller=Admin}/{action=Account}/{id?}");
 
