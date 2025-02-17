@@ -5,6 +5,10 @@ namespace DAL.Entities;
 
 public class NewsArticle
 {
+    public NewsArticle()
+    {
+    }
+
     public string NewsArticleId { get; set; } = null!;
 
     public string? NewsTitle { get; set; }
@@ -32,4 +36,5 @@ public class NewsArticle
     public virtual SystemAccount? CreatedBy { get; set; }
 
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+
 }

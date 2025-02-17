@@ -1,4 +1,8 @@
-﻿using DAL.Entities;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.ViewModels;
+using BLL.ViewModels.Requests;
+using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
 using Microsoft.Extensions.Logging;
@@ -7,42 +11,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace BLL.Services
 {
-    public class NewsArticleService : INewsArticleRepository
+    public class NewsArticleService : INewsArticleService
     {
         private readonly INewsArticleRepository _newsArticleRepository;
-        private readonly ILogger
+        private readonly IMapper _mapper;
         
-        public NewsArticleService (NewsArticleRepository newsArticleRepository)
+        public NewsArticleService (INewsArticleRepository newsArticleRepository, IMapper mapper)
         {
-            newsArticleRepository = (NewsArticleRepository)_newsArticleRepository;
+            newsArticleRepository = _newsArticleRepository;
+            mapper = _mapper;
         }
 
-        public Task<NewsArticle> CreateNewsArticle(NewsArticle news)
+        public async Task<NewsArticleRequestModel> CreateNewsArticle(NewsArticleRequestModel newsModel)
         {
-            throw new NotImplementedException();
+            var newsArticle = _mapper.Map<NewsArticle>(newsModel);
+            List<int> tagIds = newsModel.TagIds ?? new List<int>();
+
+            await _newsArticleRepository.CreateNewsArticle(newsArticle, tagIds);
         }
 
-        public Task<NewsArticle> DeleteNewsArticle(string id)
+        public async Task<string> DeleteNewsArticle(string id)
         {
-            throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<NewsArticle>> GetAllAsync()
+        public async Task<IEnumerable<NewsArticle>> GetAllActiveAsync()
         {
-            throw new NotImplementedException();
         }
 
-        public Task<NewsArticle> GetNewsArticleByIdAsync(string id)
+        public async Task<NewsArticle> GetNewsArticleByIdAsync(string id)
         {
-            throw new NotImplementedException();
         }
 
-        public Task<NewsArticle> UpdateNewsArticle(NewsArticle news)
+        public async Task<NewsArticleRequestModel> UpdateNewsArticle(NewsArticleRequestModel news)
         {
-            throw new NotImplementedException();
         }
     }
 }
