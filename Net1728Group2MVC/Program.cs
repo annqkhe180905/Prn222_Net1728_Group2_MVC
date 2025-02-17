@@ -4,8 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Net1728Group2MVC;
 using Net1728Group2MVC.Middleware;
 using System.Configuration;
+using AutoMapper;
+using BLL.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAutoMapper(typeof(MapperConfigure));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
