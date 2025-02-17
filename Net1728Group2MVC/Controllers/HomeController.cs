@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Net1728Group2MVC.Models;
+using Newtonsoft.Json;
 
 namespace Net1728Group2MVC.Controllers
 {
@@ -15,6 +16,21 @@ namespace Net1728Group2MVC.Controllers
 
         public IActionResult Index()
         {
+            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
+            var userString = HttpContext.Session.GetString("User");
+
+            if (isAuthenticated == "True")
+            {
+                AccountModel user = JsonConvert.DeserializeObject<AccountModel>(userString);
+                ViewBag.UserName = $"{user.AccountName}";
+                ViewBag.UserEmail = $"{user.AccountEmail}";
+                ViewBag.Role = $"{user.AccountRole}";
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             return View();
         }
 

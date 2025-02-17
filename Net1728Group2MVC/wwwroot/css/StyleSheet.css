@@ -1,0 +1,59 @@
+﻿.bg-primary {
+    background-color: #f53b57 !important
+}
+
+#layoutAuthentication_content {
+    min-width: 0;
+    flex-grow: 1;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.35rem 1.35rem;
+}
+
+.form-control, .dataTable-input {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #69707a;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #c5ccd6;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #f53b57;
+    border-color: #f53b57;
+}
+
+    .btn-primary:hover {
+        background-color: #d90027;
+        border-color: #d90027;
+    }
+
+    .btn-primary:active,
+    .btn-primary:focus {
+        background-color: #ff0000 !important;
+        border-color: #ff0000 !important;
+    }
+
