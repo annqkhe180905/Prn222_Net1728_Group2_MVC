@@ -107,3 +107,101 @@ fixed .topnav {
         font-size: 1rem;
         font-weight: bold;
     }
+
+.nav-fixed #layoutSidenav #layoutSidenav_content {
+    padding-left: 15rem;
+    top: 3.625rem;
+}
+
+.page-header.page-header-dark {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.page-header .page-header-content {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.bg-gradient-primary-to-secondary {
+    background-color: #f53b57 !important;
+    background-image: linear-gradient(135deg, #f53b57 0%, rgba(255, 121, 63, 0.8) 100%) !important;
+}
+
+.pb-10 {
+    padding-bottom: 6rem !important;
+}
+
+.mt-n10 {
+    margin-top: -6rem !important;
+}
+
+header {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(33, 40, 50, 0.125);
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    padding: 1rem 1.35rem;
+    margin-bottom: 0;
+    background-color: rgba(33, 40, 50, 0.03);
+    border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+}
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.35rem 1.35rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.custom-btn {
+    background-color: #F2F6FC;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.35rem;
+    color: #6A707B;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+}
+
+    .custom-btn:hover{
+        opacity: 0.8;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+.mx-2 {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.custom-table {
+    border: 3px solid black; /* Increase border weight */
+    border-radius: 10px; /* Round the corners */
+    border-collapse: separate; /* Ensure the border-radius applies properly */
+    overflow: hidden; /* Hide any overflowed content when border-radius is applied */
+}
+
+    .custom-table th, .custom-table td {
+        padding: 10px; /* Add padding for better readability */
+    }
+
+
