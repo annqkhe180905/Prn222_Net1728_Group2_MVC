@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace DAL.Interfaces
 {
     public interface ITagRepository
     {
-
+        List<Tag> GetTags();
+        void CreateTag(Tag tag);
+        void UpdateTag(Tag tag);
+        void DeleteTag(int tagId);
     }
 }
