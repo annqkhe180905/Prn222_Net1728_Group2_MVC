@@ -6,11 +6,14 @@ namespace Net1728Group2MVC.Controllers
     {
         public IActionResult Account()
         {
+            ViewBag.Header = "Account Management";
             return View();
         }
 
         public IActionResult Report()
         {
+            ViewBag.Header = "Report Management";
+
             return View();
         }
     }
