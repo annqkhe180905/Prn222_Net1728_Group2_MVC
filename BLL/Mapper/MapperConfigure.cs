@@ -17,7 +17,7 @@ namespace BLL.Mapper
             CreateMap<Category,CategoryVM> ();
             CreateMap<NewsArticle,NewsArticleVM> ();    
             CreateMap<Tag,TagVM> ();
-            CreateMap<SystemAccountVM,SystemAccountVM> ();
+            CreateMap<SystemAccountVM,SystemAccountVM>().ReverseMap();
         }
     }
 
