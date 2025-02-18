@@ -36,9 +36,16 @@ namespace DAL.Repositories
             _context.Categories.Update(category);
         }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllAsync(string? search)
         {
-            return await _context.Categories.ToListAsync();
+            var query = _context.Categories.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(c => c.CategoryName.Contains(search));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<Category>? GetLastItem() => await _context.Categories?.OrderByDescending(c => c.CategoryId).FirstOrDefaultAsync();

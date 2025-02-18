@@ -33,9 +33,9 @@ namespace BLL.Services
             return await _categoryRepository.AddAsync(newCategory);
         }
 
-        public async Task<IEnumerable<CategoryVM>> GetAllAsync()
+        public async Task<IEnumerable<CategoryVM>> GetAllAsync(string? search)
         {
-            var list = await _categoryRepository.GetAllAsync();
+            var list = await _categoryRepository.GetAllAsync(search);
             return _mapper.Map<IEnumerable<CategoryVM>>(list);
         }
 
