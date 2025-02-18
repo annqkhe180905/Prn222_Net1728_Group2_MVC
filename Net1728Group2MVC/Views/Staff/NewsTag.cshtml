@@ -1,0 +1,25 @@
+﻿@model List<BLL.DTOs.TagVM>
+
+<h1>News Tag Management</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tag Name</th>
+            <th>Note</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TagName</td>
+                <td>@item.Note</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TagId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TagId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TagId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

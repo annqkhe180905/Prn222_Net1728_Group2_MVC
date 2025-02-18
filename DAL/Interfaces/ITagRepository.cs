@@ -10,7 +10,7 @@ namespace DAL.Interfaces
     public interface ITagRepository
     {
         List<Tag> GetAllTags();
-        Task<Tag?> GetTagByIdAsync(int id);
+        Task<Tag> GetTagByIdAsync(int id);
         void CreateTag(Tag tag);
         void UpdateTag(Tag tag);
         void DeleteTag(int tagId);
