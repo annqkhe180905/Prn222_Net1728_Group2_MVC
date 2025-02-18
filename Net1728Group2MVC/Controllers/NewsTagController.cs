@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using DAL.Entities;
+using BLL.DTOs;
 
 namespace Net1728Group2MVC.Controllers
 {
@@ -16,8 +17,13 @@ namespace Net1728Group2MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var newsTags =  _tagService.GetTags();
-            return View("~/Views/Tag/Index.cshtml", newsTags);
+            var newsTags = _tagService.GetAllTags();
+            return View(newsTags);
+        }
+
+        public IActionResult Details(int id)
+        {
+            return View();
         }
 
         public IActionResult Create()
@@ -26,61 +32,15 @@ namespace Net1728Group2MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TagVM newsTag)
+        public async Task<IActionResult> Create(TagVM tagVM)
         {
             if (ModelState.IsValid)
             {
-                 _tagService.CreateTag(newsTag);
+                 _tagService.CreateTag(tagVM);
                 return RedirectToAction(nameof(Index));
             }
-            return View($"~/Views/Tag/{nameof(newsTag)}.cshtml", newsTag);
+            return View($"~/Views/Tag/{nameof(tagVM)}.cshtml", tagVM);
         }
 
-        public async Task<IActionResult> Edit(int id)
-        {
-            var newsTag = await _tagService.GetTags().FirstOrDefault(t => t.TagId == id);
-   
-            if (newsTag == null)
-            {
-                return NotFound();
-            }
-            return View($"~/Views/Tag/{nameof(newsTag)}.cshtml", newsTag);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TagVM newsTag)
-        {
-            if (id != newsTag.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                await _tagService.UpdateTag(newsTag);
-                return RedirectToAction(nameof(Index));
-            }
-            return View($"~/Views/Tag/{nameof(newsTag)}.cshtml", newsTag);
-        }
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            var newsTag = await _tagService.DeleteTag(id);
-            if (newsTag == null)
-            {
-                return NotFound();
-            }
-            return View($"~/Views/Tag/{nameof(newsTag)}.cshtml", newsTag);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _tagService.DeleteTag(id);
-            return RedirectToAction(nameof(Index));
-        }
     }
 }

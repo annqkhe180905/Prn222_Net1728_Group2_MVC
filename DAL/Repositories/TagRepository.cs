@@ -18,7 +18,7 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public void CreateTag(TagVM tag)
+        public void CreateTag(Tag tag)
         {
             try
             {
@@ -55,9 +55,9 @@ namespace DAL.Repositories
             }
         }
 
-        public List<TagVM> GetTags()
+        public List<Tag> GetAllTags()
         {
-            List<TagVM> tagsList = new List<TagVM>();
+            List<Tag> tagsList = new List<Tag>();
             try
             {
                 tagsList = _context.Tags.ToList();
@@ -69,7 +69,12 @@ namespace DAL.Repositories
             return tagsList;
         }
 
-        public void UpdateTag(TagVM tag)
+        public async Task<Tag?> GetTagByIdAsync(int id)
+        {
+            return await _context.Tags.FindAsync(id);
+        }
+
+        public void UpdateTag(Tag tag)
         {
             try
             {
