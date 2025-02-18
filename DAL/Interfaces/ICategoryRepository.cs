@@ -10,7 +10,7 @@ namespace DAL.Interfaces
     public interface ICategoryRepository
     {
         Task<bool> AddAsync(Category newCategory);
-        Task<IEnumerable<Category>> GetAllAsync();
+        Task<IEnumerable<Category>> GetAllAsync(string? search);
         Task<Category>? GetLastItem();
 
         Task<Category>? FindAsync(int id);

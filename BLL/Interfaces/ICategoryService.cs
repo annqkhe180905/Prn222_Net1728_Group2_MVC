@@ -12,7 +12,7 @@ namespace BLL.Interfaces
     {
         Task<bool> AddAsync(CategoryVM incomingCategory);
         Task<bool> UpdateAsync(CategoryVM editCategory);
-        Task<IEnumerable<CategoryVM>> GetAllAsync();
+        Task<IEnumerable<CategoryVM>> GetAllAsync(string? search);
         Task<bool> RemoveAsync(int id);
     }
 }

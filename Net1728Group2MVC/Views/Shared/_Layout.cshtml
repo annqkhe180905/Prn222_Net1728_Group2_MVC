@@ -44,9 +44,9 @@
         </div>
 
     </nav>
-    <div class="" id="layoutSidenav_content">
-        <main role="main" class="pb-3">
-            <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+    <div class=" bg-gradient-primary-to-secondary">
+        <main role="main" class="pb-10">
+            <header class="page-header page-header-dark pb-10">
                 <div class="container-xl px-4">
                     <div class="page-header-content pt-4">
                         <div class="row align-items-center justify-content-between">
@@ -55,7 +55,7 @@
                                     <form method="get">
                                         @if (ViewBag.Role == 1)
                                         {
-                                            <button class="custom-btn mx-2">Category Management</button>
+                                            <button class="custom-btn mx-2" type="submit" asp-controller="staff" asp-action="category">Category Management</button>
                                             <button class="custom-btn mx-2">News Management</button>
                                             <button class="custom-btn mx-2">Profile Management</button>
                                         }
@@ -75,7 +75,6 @@
                     </div>
                 </div>
             </header>
-
             <div class="container-xl px-4 mt-n10">
                 <div class="card">
                     @if (ViewBag.Header != null)
@@ -98,11 +97,11 @@
         </main>
     </div>
 
-    @*     <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" id="layoutSidenav_content">
     <div class="container">
-    &copy; 2025 - FuNewsManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    &copy; 2025 - FuNewsManagement
     </div>
-    </footer> *@
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

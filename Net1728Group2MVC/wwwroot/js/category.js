@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const isActive = button.getAttribute('data-isActive');
 
         this.querySelector('#editCateId').value = categoryId;
-        this.querySelector('#editCateName').placeholder = categoryName;
-        this.querySelector('#editCateDescription').placeholder = categoryDescription;
+        this.querySelector('#editCateName').value = categoryName;
+        this.querySelector('#editCateDescription').value = categoryDescription;
         const select = this.querySelector('.editSelect');
         select.value = isActive;
 

@@ -3,23 +3,28 @@
     // Layout = "~/Views.Shared/_Layout.cshtml";
 }
 @model CategoryModal
-<div class="border" style="border-radius: 15px;">
-    <div class="card-header">
-        <div class="d-flex justify-content-between align-items-center p-2">
-            <h1>Category Management</h1>
-            <button type="button" class="btn btn-dark h-100 rounded p-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                <span class="text-white fs-5 fw-bold">Add</span>
+<div class="d-flex align-items-center gap-2 my-2 w-100 h-100">
+    <form class="d-flex h-100" method="get" action="@Url.Action("Category", "Staff")">
+        <div class="input-group">
+            <input type="text" class="form-control" name="search" value="@Context.Request.Query["search"]" placeholder="Search" />
+            <button class="btn btn-outline-dark btn-danger text-white fw-bold" type="submit">
+                Search
             </button>
         </div>
-    </div>
+    </form>
+
+    <button type="button" class="btn btn-danger h-100 rounded p-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+        <span class="text-white fs-6 fw-bold">Add Category</span>
+    </button>
+</div>
     <div>
         <table class="table table-hover">
             <thead class="bg-black bg-opacity-10">
                 <tr class="align-content-center">
-                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Category Name</th>
-                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Description</th>
-                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Active</th>
-                    <th class="p-3 text-center fs-5" style="vertical-align: middle!important">Action</th>
+                    <th class="p-3 text-center fs-6" style="vertical-align: middle!important">Category Name</th>
+                    <th class="p-3 text-center fs-6" style="vertical-align: middle!important">Description</th>
+                    <th class="p-3 text-center fs-6" style="vertical-align: middle!important">Status</th>
+                    <th class="p-3 text-center fs-6" style="vertical-align: middle!important">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,9 +35,9 @@
                 @foreach (var category in Model.Categories)
                 {
                     <tr class="category-item">
-                        <td class="text-center fw-bold fs-5 h-auto" style="vertical-align: middle!important">@category.CategoryName</td>
-                        <td class="fs-5" style="vertical-align: middle!important">@category.CategoryDesciption</td>
-                        <td class="text-center fs-5 " style="vertical-align: middle!important;">
+                        <td class="text-center fw-bold fs-6 h-auto" style="vertical-align: middle!important">@category.CategoryName</td>
+                        <td class="fs-6" style="vertical-align: middle!important">@category.CategoryDesciption</td>
+                        <td class="text-center fs-6 " style="vertical-align: middle!important;">
                             <div class="p-2 rounded-3" style="@(category.IsActive == true ? "background-color:lightgreen" : "background-color:lightcoral")">
                                 <label style="@(category.IsActive == true ? "color:darkgreen" : "color:darkred")">
                                     @(category.IsActive == true ? "Active" : "Inactive")
@@ -42,7 +47,7 @@
                         <td class="align-content-center">
                             <div class="d-flex justify-content-center gap-2">
                                 <button type="button" class="btn deleteCategoryButton" data-id="@category.CategoryId">
-                                    <i class="d-block bi bi-trash3 fs-3"></i>
+                                    <i class="d-block bi bi-trash3 fs-4"></i>
                                 </button>
                                 <button type="button" class="btn"
                                         data-bs-toggle="modal"
@@ -52,7 +57,7 @@
                                         data-isActive="@category.IsActive"
                                         data-bs-target="#editCategory">
 
-                                    <i class="bi bi-pencil-square fs-3"></i>
+                                    <i class="bi bi-pencil-square fs-4"></i>
                                 </button>
                             </div>
                         </td>
@@ -106,7 +111,6 @@
                         <input asp-for="CategoryName"
                                class="p-3 border rounded-3 w-100 fs-5 mb-2"
                                id="editCateName"
-                               value=""
                                placeholder="New category name "
                                required maxlength="20" />
 
@@ -130,5 +134,4 @@
             </div>
         </div>
     </div>
-</div>
 <script src="~/js/category.js"></script>

@@ -19,12 +19,14 @@ namespace Net1728Group2MVC.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Category()
+        public async Task<IActionResult> Category(string? search)
         {
+            ViewBag.Header = "Category Management";
             var categoryModal = new CategoryModal()
             {
-                Categories = await _categoryService.GetAllAsync()
+                Categories = await _categoryService.GetAllAsync(search)
             };
+
             return View(categoryModal);
         }
         public IActionResult Profile()
