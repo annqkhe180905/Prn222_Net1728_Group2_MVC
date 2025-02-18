@@ -9,10 +9,12 @@ namespace DAL.Interfaces
 {
     public interface ITagRepository
     {
-        List<Tag> GetAllTags();
-        Task<Tag> GetTagByIdAsync(int id);
-        void CreateTag(Tag tag);
-        void UpdateTag(Tag tag);
-        void DeleteTag(int tagId);
+        public IEnumerable<Tag> GetAllTags();
+        public Task<Tag> GetTagByIdAsync(int id);
+        public void CreateTag(Tag tag);
+        public void UpdateTag(Tag tag);
+        public void DeleteTag(int id);
+
+        public IEnumerable<Tag> Search(string keyword);
     }
 }

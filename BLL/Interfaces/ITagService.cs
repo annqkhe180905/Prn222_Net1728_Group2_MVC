@@ -15,5 +15,7 @@ namespace BLL.Interfaces
         void CreateTag(TagVM tag);
         void UpdateTag(TagVM tag);
         void DeleteTag(int tagId);
+
+        IEnumerable<TagVM> Search(string keyword);
     }
 }

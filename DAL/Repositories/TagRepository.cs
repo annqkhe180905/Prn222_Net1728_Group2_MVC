@@ -55,23 +55,23 @@ namespace DAL.Repositories
             }
         }
 
-        public List<Tag> GetAllTags()
-        {
-            List<Tag> tagsList = new List<Tag>();
-            try
-            {
-                tagsList = _context.Tags.ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return tagsList;
-        }
 
         public async Task<Tag?> GetTagByIdAsync(int id)
         {
-            return await _context.Tags.FindAsync(id);
+            var tag = await _context.Tags.FindAsync(id);
+            if(tag != null)
+            {
+                throw new KeyNotFoundException($"Tag with ID {id} not found.");
+            }   
+            return tag;
+        }
+
+        public IEnumerable<Tag> Search(string keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword))
+                return new List<Tag>();
+
+            return _context.Tags.Where(t => t.TagName.Contains(keyword)).ToList();
         }
 
         public void UpdateTag(Tag tag)
@@ -94,6 +94,11 @@ namespace DAL.Repositories
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        IEnumerable<Tag> ITagRepository.GetAllTags()
+        {
+            return _context.Tags.ToList();
         }
     }
 }

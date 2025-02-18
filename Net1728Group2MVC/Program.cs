@@ -70,8 +70,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "NewsTagManagement",
-    pattern: "Staff/NewsTag/{id?}",
-    defaults: new { controller = "Staff", action = "NewsTag" });
+    pattern: "{controller=Staff}/{action=NewsTag}/{id?}");
 
 app.MapControllerRoute(
     name: "ProfileManagement",

@@ -44,6 +44,11 @@ namespace BLL.Services
             return _mapper.Map<TagVM>(id);
         }
 
+        public IEnumerable<TagVM> Search(string keyword)
+        {
+            return _mapper.Map<TagVM>(keyword);
+        }
+
         public void UpdateTag(TagVM tagVM)
         {
             var newsTag = _mapper.Map<Tag>(tagVM);
