@@ -20,34 +20,11 @@ namespace DAL.Repositories
 
         public async Task<NewsArticle> CreateNewsArticle(NewsArticle news)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<NewsArticle> DeleteNewsArticle(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<NewsArticle>> GetAllActiveArticles()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<NewsArticle> GetNewsArticleById(string id)
-        {
             try
             {
-                var result = _dbContext.NewsArticles.FirstOrDefault(x => x.NewsArticleId == id);
-                if (result == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return result;
-                }
-
-
+                _dbContext.NewsArticles.Add(news);
+                await _dbContext.SaveChangesAsync();
+                return news;
             }
             catch (Exception ex)
             {
@@ -55,9 +32,34 @@ namespace DAL.Repositories
             }
         }
 
+        public async Task<bool> DeleteNewsArticle(NewsArticle news)
+        {
+            _dbContext.NewsArticles.Remove(news);
+            int affectedRows = await _dbContext.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        public async Task<IEnumerable<NewsArticle>> GetAllActiveArticles()
+        {
+            return await _dbContext.NewsArticles
+                .Where(n => n.NewsStatus == true)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<NewsArticle>> GetAllArticle()
+        {
+            return await _dbContext.NewsArticles.ToListAsync();
+        }
+
+        public async Task<NewsArticle> GetNewsArticleById(string id)
+        {
+            return await _dbContext.NewsArticles.FindAsync(id);
+        }
+
         public async Task<NewsArticle> UpdateNewsArticle(NewsArticle news)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         //public async Task<short?> GetMaxNewsArticleIdAsync()
