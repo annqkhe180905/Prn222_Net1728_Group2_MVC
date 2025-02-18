@@ -23,36 +23,38 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public void CreateTag(TagVM tagVM)
+        public Task<bool> CreateTagAsync(TagVM tagVM)
         {
             var newsTag = _mapper.Map<Tag>(tagVM);
-            _tagRepository.CreateTag(newsTag);
+            return _tagRepository.CreateTagAsync(newsTag);
+            
         }
-        public void DeleteTag(int tagId)
+        public async Task<bool> DeleteTagAsync(int tagId)
         {
-            _tagRepository.DeleteTag(tagId);
+            var tag = await _tagRepository.GetTagByIdAsync(tagId);
+            if(tag == null) 
+                return false;
+            await _tagRepository.DeleteTagAsync(tagId);
+            return true;
         }
 
-        public List<TagVM> GetAllTags()
+        public async Task<IEnumerable<TagVM>> GetAllTagsAsync(string? search)
         {
-            var newsTags = _tagRepository.GetAllTags();
-            return _mapper.Map<List<TagVM>>(newsTags);  
+            var list = await _tagRepository.GetAllTagsAsync(search);
+            return _mapper.Map<List<TagVM>>(list);  
         }
 
         public TagVM GetTagById(int id)
         {
-            return _mapper.Map<TagVM>(id);
+            var newsTag = _tagRepository.GetTagByIdAsync(id);
+            return _mapper.Map<TagVM>(newsTag);
         }
 
-        public IEnumerable<TagVM> Search(string keyword)
-        {
-            return _mapper.Map<TagVM>(keyword);
-        }
 
-        public void UpdateTag(TagVM tagVM)
+        public async Task<bool> UpdateTagAsync(TagVM tagVM)
         {
             var newsTag = _mapper.Map<Tag>(tagVM);
-            _tagRepository.UpdateTag(newsTag);
+            return await _tagRepository.UpdateTagAsync(newsTag);
         }
     }
 }

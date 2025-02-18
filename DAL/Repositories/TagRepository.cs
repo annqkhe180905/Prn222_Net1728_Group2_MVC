@@ -1,5 +1,7 @@
 ﻿using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,31 +20,34 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public void CreateTag(Tag tag)
+        public async Task<bool> CreateTagAsync(Tag tag)
         {
             try
             {
-                _context.Tags.Add(tag);
-                _context.SaveChanges();
+                await _context.Tags.AddAsync(tag);
+                await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+                return false;
             }
 
-            throw new NotImplementedException();
+            
         }
 
-        public void DeleteTag(int tagId)
+        public async Task<bool> DeleteTagAsync(int tagId)
         {
             try
             {
                 
-                var tag = _context.Tags.Find(tagId);
+                var tag = await _context.Tags.FindAsync(tagId);
                 if (tag != null)
                 {
                     _context.Tags.Remove(tag);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
+                    return true;
                 }
                 else
                 {
@@ -52,18 +57,14 @@ namespace DAL.Repositories
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+                return false;
             }
         }
 
 
         public async Task<Tag?> GetTagByIdAsync(int id)
         {
-            var tag = await _context.Tags.FindAsync(id);
-            if(tag != null)
-            {
-                throw new KeyNotFoundException($"Tag with ID {id} not found.");
-            }   
-            return tag;
+            return await _context.Tags.FirstOrDefaultAsync(t => t.TagId == id);
         }
 
         public IEnumerable<Tag> Search(string keyword)
@@ -74,16 +75,17 @@ namespace DAL.Repositories
             return _context.Tags.Where(t => t.TagName.Contains(keyword)).ToList();
         }
 
-        public void UpdateTag(Tag tag)
+        public async Task<bool> UpdateTagAsync(Tag tag)
         {
             try
             {
-                var existingTag = _context.Tags.Find(tag.TagId);
+                var existingTag = await _context.Tags.FindAsync(tag.TagId);
                 if (existingTag != null)
                 {
                     existingTag.TagName = tag.TagName;
                     existingTag.Note = tag.Note;
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
+                    return true;
                 }
                 else
                 {
@@ -96,8 +98,13 @@ namespace DAL.Repositories
             }
         }
 
-        IEnumerable<Tag> ITagRepository.GetAllTags()
+        public async Task<IEnumerable<Tag>> GetAllTagsAsync(string keyword)
         {
+            var query = _context.Tags.AsQueryable();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(t => t.TagName.Contains(keyword)); 
+            }
             return _context.Tags.ToList();
         }
     }

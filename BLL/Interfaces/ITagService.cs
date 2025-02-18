@@ -10,12 +10,11 @@ namespace BLL.Interfaces
 {
     public interface ITagService
     {
-        List<TagVM> GetAllTags();
+        Task<IEnumerable<TagVM>> GetAllTagsAsync(string? search);
         TagVM GetTagById(int id);
-        void CreateTag(TagVM tag);
-        void UpdateTag(TagVM tag);
-        void DeleteTag(int tagId);
+        Task<bool> CreateTagAsync(TagVM tag);
+        Task<bool> UpdateTagAsync(TagVM tag);
+        Task<bool> DeleteTagAsync(int tagId);
 
-        IEnumerable<TagVM> Search(string keyword);
     }
 }

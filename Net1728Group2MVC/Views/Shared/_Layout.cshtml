@@ -56,9 +56,9 @@
                                         {
                                             <button class="custom-btn mx-2">Category Management</button>
                                             <button class="custom-btn mx-2">News Management</button>
-                                            <button class="custom-btn mx-2">
-                                                <a asp-controller="Staff" asp-action="NewsTag">News Tag Management</a>
-                                            </button>
+                                             <button asp-controller="Staff" asp-action="NewsTag"  class="custom-btn mx-2">
+                                                 News Tag Management
+                                             </button>
                                             <button class="custom-btn mx-2">Profile Management</button>
                                         }
                                         else if (ViewBag.Role == 2)

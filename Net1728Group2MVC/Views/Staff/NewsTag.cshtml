@@ -1,25 +1,36 @@
-﻿@model Enumerable<BLL.DTOs.TagVM>
+﻿﻿@using BLL.DTOs 
+@model TagModel
+<div class="container mt-5">
+    ﻿
+    <h1>News Tag Management</h1>
 
-<h1>News Tag Management</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Tag Name</th>
-            <th>Note</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <!-- Button to create a new tag -->
+    <div class="mb-3 text-right">
+        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#createTagModal">
+            <i class="fas fa-plus-circle"></i> Create New Tag
+        </button>
+    </div>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>@item.TagName</td>
-                <td>@item.Note</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.TagId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.TagId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TagId">Delete</a>
-                </td>
+                <th>Tag Name</th>
+                <th>Note</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var tag in Model.Tag)
+            {
+                <tr>
+                    <td>@tag.TagName</td>
+                    <td>@tag.Note</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@tag.TagId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@tag.TagId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@tag.TagId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

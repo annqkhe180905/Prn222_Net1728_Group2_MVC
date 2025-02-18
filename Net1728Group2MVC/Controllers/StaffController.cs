@@ -1,5 +1,7 @@
 ﻿using BLL.Interfaces;
+using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Net1728Group2MVC.Models;
 
 namespace Net1728Group2MVC.Controllers
 {
@@ -23,14 +25,12 @@ namespace Net1728Group2MVC.Controllers
         {
             return View();
         }
-        public IActionResult NewsTag()
+        public async Task<IActionResult> NewsTag(string? search)
         {
-            var newsTags = _tagService.GetAllTags();
-            if (newsTags != null)
-            {
-                return NotFound();
-            }
-            return View(newsTags);
+            
+            var tags = await _tagService.GetAllTagsAsync(search);
+            var tagModel = new TagModel { Tag = tags.ToList() };
+            return View(tagModel);
         }
 
     }
