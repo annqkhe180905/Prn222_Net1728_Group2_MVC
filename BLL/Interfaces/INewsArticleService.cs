@@ -16,6 +16,6 @@ namespace BLL.Interfaces
         Task<NewsArticle> CreateNewsArticle(NewsArticleVM model);
         Task<NewsArticle> UpdateNewsArticle(NewsArticleVM news);
         Task<bool> DeleteNewsArticle(string id);
-        Task<IEnumerable<NewsArticle>> SearchArticles (string search, int? categoryId, List<int>? tagIds, string? createdBy);
+        Task<IEnumerable<NewsArticle>> SearchArticles (string search, int? categoryId, List<int>? tagIds, short? createdBy);
     }
 }

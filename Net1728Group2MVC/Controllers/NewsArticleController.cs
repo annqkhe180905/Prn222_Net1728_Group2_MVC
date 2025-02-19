@@ -4,6 +4,10 @@ using BLL.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Net1728Group2MVC.Models;
+using System.Security.Claims;
+using System.Text.Json;
+using DAL.Entities;
+
 
 namespace Net1728Group2MVC.Controllers
 {
@@ -18,9 +22,11 @@ namespace Net1728Group2MVC.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(string? search, int? categoryId, List<int>? tagIds, string? createdBy)
+        public async Task<IActionResult> Index(string? search, int? categoryId, List<int>? tagIds, short? createdBy)
         {
-            var model = await _newsArticleService.SearchArticles(search, categoryId, tagIds, createdBy);
+            var jsonString = HttpContext.Session.GetString("User");
+            var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
+            var model = await _newsArticleService.SearchArticles(search, categoryId, tagIds, user.AccountId);
             return View(model);
         }
 
@@ -38,7 +44,10 @@ namespace Net1728Group2MVC.Controllers
                 return View(model);
             }
 
-            var news = _mapper.Map<NewsArticleVM>(model);
+            var jsonString = HttpContext.Session.GetString("User");
+            var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
+            model.CreatedById = user.AccountId;
+            var news = _mapper.Map<NewsArticleVM>(model);         
             await _newsArticleService.UpdateNewsArticle(news);
             return RedirectToAction("Index", "Home");
         }
@@ -50,7 +59,9 @@ namespace Net1728Group2MVC.Controllers
             {
                 return View(model);
             }
-
+            var jsonString = HttpContext.Session.GetString("User");
+            var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
+            model.UpdatedById = user.AccountId;
             var news = _mapper.Map<NewsArticleVM>(model);
             await _newsArticleService.UpdateNewsArticle(news);
             return RedirectToAction("Index", "Home");

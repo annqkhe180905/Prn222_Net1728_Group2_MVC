@@ -25,6 +25,7 @@
             <tr>
                 <th class="p-3 text-center">Title</th>
                 <th class="p-3 text-center">Headline</th>
+                <th class="p-3 text-center">Category</th>
                 <th class="p-3 text-center">Status</th>
                 <th class="p-3 text-center">Action</th>
             </tr>
@@ -37,6 +38,15 @@
                     <tr>
                         <td class="text-center">@article.NewsTitle</td>
                         <td class="text-center">@article.Headline</td>
+                        <!-- Show Category Name -->
+                        <td class="text-center">
+                            <!--  -->
+                        </td>
+
+                        <!-- Show Tag Names -->
+                        <td class="text-center">
+                            <!--  -->
+                        </td>
                         <td class="text-center">
                             <span class="badge @(article.NewsStatus == true ? "bg-success" : "bg-danger")">
                                 @(article.NewsStatus == true ? "Published" : "Draft")
@@ -51,6 +61,7 @@
                                     data-title="@article.NewsTitle"
                                     data-headline="@article.Headline"
                                     data-content="@article.NewsContent"
+                                    data-category="@article.CategoryId"
                                     data-status="@article.NewsStatus"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editNewsArticleModal">
@@ -72,7 +83,7 @@
                 <h4>Add News Article</h4>
             </div>
             <div class="modal-body">
-                <form id="newsArticleForm" method="post" action="@Url.Action("CreateNewsArticle", "NewsArticleController")">
+                <form id="newsArticleForm" method="post" action="@Url.Action("CreateNewsArticle", "NewsArticle")">
                     <label>Title</label>
                     <input name="NewsTitle" class="form-control" required maxlength="200" />
 
@@ -81,6 +92,22 @@
 
                     <label>Content</label>
                     <textarea name="NewsContent" class="form-control"></textarea>
+
+                    <label>Category</label>
+                    <select name="CategoryId" class="form-control">
+                        @foreach (var category in )
+                        {
+                            <option value="@category.CategoryId">@category.CategoryName</option>
+                        }
+                    </select>
+
+                    <label>Tags</label>
+                    <select name="TagIds" multiple class="form-control">
+                        @foreach (var tag in Model)
+                        {
+                            <option value="@tag.TagId">@tag.TagName</option>
+                        }
+                    </select>
 
                     <button type="submit" class="btn btn-primary mt-3">Save</button>
                 </form>
@@ -97,7 +124,7 @@
                 <h4>Edit News Article</h4>
             </div>
             <div class="modal-body">
-                <form id="editNewsArticleForm" method="post" action="@Url.Action("UpdateNewsArticle", "NewsArticleController")">
+                <form id="editNewsArticleForm" method="post" action="@Url.Action("UpdateNewsArticle", "NewsArticle")">
                     <input type="hidden" name="NewsArticleId" id="editNewsId" />
 
                     <label>Title</label>
@@ -109,6 +136,22 @@
                     <label>Content</label>
                     <textarea name="NewsContent" id="editNewsContent" class="form-control"></textarea>
 
+                    <label>Category</label>
+                    <select name="CategoryId" id="editNewsCategory" class="form-control">
+                        @foreach (var category in Model.NewsCategories)
+                        {
+                            <option value="@category.CategoryId">@category.CategoryName</option>
+                        }
+                    </select>
+
+                    <label>Tags</label>
+                    <select name="TagIds" id="editNewsTags" multiple class="form-control">
+                        @foreach (var tag in Model.NewsTags)
+                        {
+                            <option value="@tag.TagId">@tag.TagName</option>
+                        }
+                    </select>
+
                     <button type="submit" class="btn btn-primary mt-3">Save</button>
                 </form>
             </div>
@@ -116,4 +159,37 @@
     </div>
 </div>
 
-<script src="~/js/newsArticle.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".editNewsArticleButton").forEach(button => {
+            button.addEventListener("click", function () {
+                document.getElementById("editNewsId").value = this.getAttribute("data-id");
+                document.getElementById("editNewsTitle").value = this.getAttribute("data-title");
+                document.getElementById("editNewsHeadline").value = this.getAttribute("data-headline");
+                document.getElementById("editNewsContent").value = this.getAttribute("data-content");
+                document.getElementById("editNewsCategory").value = this.getAttribute("data-category");
+            });
+        });
+
+        document.querySelectorAll(".deleteNewsArticleButton").forEach(button => {
+            button.addEventListener("click", function () {
+                let articleId = this.getAttribute("data-id");
+                if (confirm("Are you sure you want to delete this article?")) {
+                    fetch(`/NewsArticle/DeleteNewsArticle?id=${articleId}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert("Failed to delete article.");
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>

@@ -42,14 +42,28 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<NewsArticle>> GetAllArticles()
         {
-            return await _dbContext.NewsArticles.ToListAsync();
-        }
+            //return await _dbContext.NewsArticles.ToListAsync();
 
-        public Task<IEnumerable<NewsArticle>> GetAllArticle()
-        {
-            throw new NotImplementedException();
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+                .Select(n => new
+                {
+                    NewsArticleId = n.NewsArticleId,
+                    NewsTitle = n.NewsTitle,
+                    Headline = n.Headline,
+                    NewsContent = n.NewsContent,
+                    NewsSource = n.NewsSource,
+                    CategoryId = n.CategoryId,
+                    CategoryName = n.Category != null ? n.Category.CategoryName : "Unknown",
+                    NewsStatus = n.NewsStatus,
+                    CreatedById = n.CreatedById,
+                    UpdatedById = n.UpdatedById,
+                    CreatedDate = n.CreatedDate,
+                    ModifiedDate = n.ModifiedDate,
+                    TagIds = n.Id.Select(t => t.TagId).ToList()
+                })
+                .ToListAsync();
         }
-
 
         public async Task<NewsArticle> GetNewsArticleById(string id)
         {
@@ -64,7 +78,7 @@ namespace DAL.Repositories
             return news;
         }
 
-        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, string? createdBy)
+        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, short? createdBy)
         {
             var query = _dbContext.NewsArticles
                 .Include(n => n.Category)
@@ -82,10 +96,10 @@ namespace DAL.Repositories
             {
                 query = query.Where(n => n.Tags.Any(t => tagIds.Contains(t.TagId)));
             }
-            //if (!string.IsNullOrEmpty(createdBy))
-            //{
-            //    query = query.Where(n => n.CreatedBy.UserName == createdBy);
-            //}
+            if (createdBy.HasValue)
+            {
+                query = query.Where(n => n.CreatedById == createdBy);
+            }
             return await query.ToListAsync();
         }
 

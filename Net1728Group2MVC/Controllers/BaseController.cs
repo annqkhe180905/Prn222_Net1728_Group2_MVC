@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Net1728Group2MVC.Models;
+using System.Security.Claims;
 
 namespace Net1728Group2MVC.Controllers
 {
@@ -16,6 +17,11 @@ namespace Net1728Group2MVC.Controllers
                 ViewBag.UserEmail = user.AccountEmail;
                 ViewBag.Role = user.AccountRole;
             }
+        }
+
+        protected string GetCurrentUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

@@ -18,6 +18,8 @@ namespace Net1728Group2MVC.Models
 
         public short? CategoryId { get; set; }
 
+        public string? CategoryName { get; set; }
+
         public bool? NewsStatus { get; set; }
 
         public short? CreatedById { get; set; }
