@@ -40,7 +40,7 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<NewsArticle>> GetAllArticle()
+        public async Task<IEnumerable<NewsArticle>> GetAllArticles()
         {
             return await _dbContext.NewsArticles.ToListAsync();
         }

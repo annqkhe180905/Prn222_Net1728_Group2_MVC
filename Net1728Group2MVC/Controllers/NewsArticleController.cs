@@ -23,11 +23,12 @@ namespace Net1728Group2MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var news = _mapper.Map<NewsArticleVM>(model);
-                await _newsArticleService.CreateNewsArticle(news);
-                return RedirectToAction("Index", "Home");
+                return View(model);
             }
-            return Ok();
+
+            var news = _mapper.Map<NewsArticleVM>(model);
+            await _newsArticleService.UpdateNewsArticle(news);
+            return RedirectToAction("Index", "Home");
         }
         
         [HttpPut]
@@ -35,54 +36,60 @@ namespace Net1728Group2MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var news = _mapper.Map<NewsArticleVM>(model);
-                await _newsArticleService.UpdateNewsArticle(news);
-                return RedirectToAction("Index", "Home");
+                return View(model);
             }
-            return Ok();
+
+            var news = _mapper.Map<NewsArticleVM>(model);
+            await _newsArticleService.UpdateNewsArticle(news);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteNewsArticle(NewsArticleControllerModel model)
+        public async Task<IActionResult> DeleteNewsArticle(string id)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(id))
             {
-                var news = _mapper.Map<NewsArticleVM>(model);
-                await _newsArticleService.UpdateNewsArticle(news);
-                return RedirectToAction("Index", "Home");
+                return BadRequest("Invalid ID");
             }
-            return Ok();
+
+            bool isDeleted = await _newsArticleService.DeleteNewsArticle(id);
+            if (!isDeleted)
+            {
+                return NotFound("News article is not found");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllNewsArticle()
         {
-            if (ModelState.IsValid)
-            {
-                var newsList = await _newsArticleService.GetAllArticle();
-                
-            }
-            return View();
+            var newsList = await _newsArticleService.GetAllArticle();
+            return View(newsList);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetActiveNewsArticle()
         {
-            if (ModelState.IsValid)
-            {
-                var newsList = await _newsArticleService.GetAllActiveArticles();
-            }
-            return View();
+            var newsList = await _newsArticleService.GetAllActiveArticles();
+            return View(newsList);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetNewsArticleById(string id)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(id))
             {
-                var newsList = await _newsArticleService.GetNewsArticleById(id);
+                return BadRequest("Invalid news article!");
             }
-            return View();
+
+            var news = await _newsArticleService.GetNewsArticleById(id);
+            if (news == null)
+            {
+                return NotFound("News article not found!");
+            }
+
+            return View(news);
         }
     }
 }
