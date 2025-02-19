@@ -2,7 +2,11 @@
 @{
     // ViewData["Title"] = "Manage News Articles";
 }
-@model NewsArticleControllerModel
+@model NewsModel
+@{
+    var categories = ViewBag.Categories as List<CategoryModal>;
+    var tags = ViewBag.Tags as List<TagModel>;
+}
 
 <div class="d-flex align-items-center gap-2 my-2 w-100 h-100">
     <form class="d-flex h-100" method="get" action="@Url.Action("News", "Staff")">
@@ -85,7 +89,15 @@
                 <h4>Add News Article</h4>
             </div>
             <div class="modal-body">
-                <form id="newsArticleForm" method="post" action="@Url.Action("News", "Staff")">
+                <form id="newsArticleForm" method="post" asp-action="CreateNewsArticle" asp-controller="NewsArticle">
+                    <label>News Article ID</label>
+                    <input name="NewsArticleId" class="form-control" required maxlength="50" />
+                    @if (ViewData.ModelState["NewsArticleId"]?.Errors.Any() == true)
+                    {
+                        <div class="text-danger">
+                            @ViewData.ModelState["NewsArticleId"].Errors.FirstOrDefault()?.ErrorMessage
+                        </div>
+                    }
                     <label>Title</label>
                     <input name="NewsTitle" class="form-control" required maxlength="200" />
 
@@ -97,22 +109,23 @@
 
                     <label>Category</label>
                     <select name="CategoryId" class="form-control">
-                        @*@foreach (var category in Model.Categories)
+                        @foreach (var category in Model.Categories)
                         {
                             <option value="@category.CategoryId">@category.CategoryName</option>
-                        }*@
+                        }
                     </select>
 
                     <label>Tags</label>
                     <select name="TagIds" multiple class="form-control">
-@*                         @foreach (var tag in Model)
+                        @foreach (var tag in Model.Tags)
                         {
                             <option value="@tag.TagId">@tag.TagName</option>
-                        } *@
+                        }
                     </select>
 
                     <button type="submit" class="btn btn-primary mt-3">Save</button>
                 </form>
+
             </div>
         </div>
     </div>
@@ -140,18 +153,18 @@
 
                     <label>Category</label>
                     <select name="CategoryId" id="editNewsCategory" class="form-control">
-@*                         @foreach (var category in Model.NewsCategories)
+                        @foreach (var category in Model.Categories)
                         {
                             <option value="@category.CategoryId">@category.CategoryName</option>
-                        } *@
+                        }
                     </select>
 
                     <label>Tags</label>
                     <select name="TagIds" id="editNewsTags" multiple class="form-control">
-@*                         @foreach (var tag in Model.NewsTags)
+                        @foreach (var tag in Model.Tags)
                         {
                             <option value="@tag.TagId">@tag.TagName</option>
-                        } *@
+                        }
                     </select>
 
                     <button type="submit" class="btn btn-primary mt-3">Save</button>

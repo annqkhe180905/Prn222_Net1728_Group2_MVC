@@ -14,12 +14,14 @@ namespace Net1728Group2MVC.Controllers
     public class NewsArticleController : Controller
     {
         private readonly INewsArticleService _newsArticleService;
+        private readonly ITagService _tagService;
         private readonly IMapper _mapper;
 
-        public NewsArticleController(INewsArticleService newsArticleService, IMapper mapper)
+        public NewsArticleController(INewsArticleService newsArticleService, IMapper mapper, ITagService tagService)
         {
             _newsArticleService = newsArticleService;
             _mapper = mapper;
+            _tagService = tagService;
         }
 
         public async Task<IActionResult> Search(string? search, int? categoryId, List<int>? tagIds, short? createdBy)
@@ -37,19 +39,26 @@ namespace Net1728Group2MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewsArticle(NewsArticleControllerModel model)
+        public async Task<IActionResult> CreateNewsArticle(NewsArticleVM model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction("News", "Staff");
             }
+
+            var existingArticle = await _newsArticleService.GetNewsArticleById(model.NewsArticleId);
+            if (existingArticle != null)
+            {
+                ModelState.AddModelError("NewsArticleId", "NewsArticleId already exists.");
+                return RedirectToAction("News", "Staff");
+            }
+
 
             var jsonString = HttpContext.Session.GetString("User");
             var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
             model.CreatedById = user.AccountId;
-            var news = _mapper.Map<NewsArticleVM>(model);         
-            await _newsArticleService.CreateNewsArticle(news);
-            return RedirectToAction("Index", "Home");
+            await _newsArticleService.CreateNewsArticle(model);
+            return RedirectToAction("News", "Staff");
         }
         
         [HttpPut]

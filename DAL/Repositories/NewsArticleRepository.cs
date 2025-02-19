@@ -20,8 +20,31 @@ namespace DAL.Repositories
 
         public async Task<NewsArticle> CreateNewsArticle(NewsArticle news)
         {
-            _dbContext.NewsArticles.Add(news);
+            if (news.CategoryId == null)
+            {
+                throw new InvalidOperationException("CategoryId is required.");
+            }
+
+            var category = await _dbContext.Categories.FindAsync(news.CategoryId);
+            if (category == null)
+            {
+                throw new InvalidOperationException("Invalid CategoryId.");
+            }
+
+            var createdBy = await _dbContext.SystemAccounts.FindAsync(news.CreatedById);
+            if (category == null)
+            {
+                throw new InvalidOperationException("Invalid CategoryId.");
+            }
+
+            news.Category = category;
+            news.CreatedBy = createdBy;
+
+
+
+            await _dbContext.NewsArticles.AddAsync(news);
             await _dbContext.SaveChangesAsync();
+
             return news;
         }
 
