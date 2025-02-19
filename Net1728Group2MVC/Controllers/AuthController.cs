@@ -28,29 +28,33 @@ namespace Net1728Group2MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(LoginModel loginModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _accountService.Login(loginModel.email, loginModel.password);
+ public async Task<ActionResult> Login(LoginModel loginModel)
+ {
+     if (ModelState.IsValid)
+     {
+         var user = await _accountService.Login(loginModel.email, loginModel.password);
 
-                if (user != null)
-                {
-                    HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
-                    HttpContext.Session.SetString("IsAuthenticated", "True");
+         if (user != null)
+         {
+             if (user.AccountRole == 3)
+             {
+                 ViewBag.ErrorLoginMessage = "Your account has been disabled!";
+                 return View(loginModel);
+             }
 
-                    if (user.AccountRole == 1 ) return RedirectToAction("Category", "Staff");
-                    else if (user.AccountRole == 2) return RedirectToAction("News", "Lecturer");
-                    else if (user.AccountRole == 0) return RedirectToAction("Account", "Admin");
+             HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
+             HttpContext.Session.SetString("IsAuthenticated", "True");
 
-                }
+             if (user.AccountRole == 1) return RedirectToAction("Category", "Staff");
+             else if (user.AccountRole == 2) return RedirectToAction("News", "Lecturer");
+             else if (user.AccountRole == 0) return RedirectToAction("Account", "Admin");
+         }
 
-                ViewBag.ErrorLoginMessage = "Invalid email or password!";
-                
-            }
+         ViewBag.ErrorLoginMessage = "Invalid email or password!";
+     }
 
-            return View(loginModel);
-        }
+     return View(loginModel);
+ }
 
         [HttpPost]
         public IActionResult Logout()
