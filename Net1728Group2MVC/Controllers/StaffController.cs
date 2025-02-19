@@ -34,6 +34,7 @@ namespace Net1728Group2MVC.Controllers
         }
         public async Task<IActionResult> Profile()
         {
+            ViewBag.Header = "Profile Management";
             var userJson = HttpContext.Session.GetString("User");
             var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
 
@@ -138,7 +139,7 @@ namespace Net1728Group2MVC.Controllers
                 await _accountService.UpdateProfile(systemAccountVM);
 
                 // Sau khi cập nhật, chuyển hướng về trang profile
-                return RedirectToAction("News");
+                return RedirectToAction("Profile");
             }
 
             // Nếu có lỗi validation, hiển thị lại trang edit với thông tin đã nhập
