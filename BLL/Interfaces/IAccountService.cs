@@ -21,7 +21,7 @@ namespace BLL.Interfaces
 
         Task CreateAccountAsync(SystemAccountVM account);
         Task DeleteAccountAsync(short id);
-        Task<bool> HasRelatedEntitiesAsync(short id); // Kiểm tra có liên kết với bảng khác không
+        Task<bool> HasRelatedEntitiesAsync(short id);
 
         Task<SystemAccount> GetAccountByEmailAsync(string email);
         IEnumerable<SystemAccount> SearchAccounts(string name, int? role);

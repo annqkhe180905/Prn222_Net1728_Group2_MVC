@@ -18,14 +18,12 @@ namespace Net1728Group2MVC.Controllers
             _accountService = accountService;
             _mapper = mapper;
         }
-        // ✅ Hiển thị danh sách tài khoản
         public async Task<IActionResult> AccountAsync()
         {
             try
             {
                 var accounts = await _accountService.GetAllAccountsAsync();
 
-                // Chuyển đổi từ SystemAccount sang AccountModel
                 var accountModels = accounts.Select(account => new AccountModel
                 {
                     AccountId = account.AccountId,
@@ -33,7 +31,6 @@ namespace Net1728Group2MVC.Controllers
                     AccountEmail = account.AccountEmail,
                     AccountPassword = account.AccountPassword,
                     AccountRole= account.AccountRole
-                    // Cẩn thận khi hiển thị mật khẩu
                 }).ToList();
 
                 ViewBag.Header = "Account Management";
@@ -48,7 +45,6 @@ namespace Net1728Group2MVC.Controllers
 
         
 
-        // ✅ Xử lý tạo tài khoản
         [HttpPost]
         public async Task<IActionResult> Create(AccountModel account)
         {
@@ -68,7 +64,7 @@ namespace Net1728Group2MVC.Controllers
                     AccountName = account.AccountName,
                     AccountEmail = account.AccountEmail,
                     AccountPassword = account.AccountPassword,
-                    AccountRole = account.AccountRole // Lưu ý xử lý mật khẩu (hashing, encryption)
+                    AccountRole = account.AccountRole 
                 };
 
                 await _accountService.CreateAccountAsync(systemAccountVM);
@@ -77,7 +73,6 @@ namespace Net1728Group2MVC.Controllers
             return RedirectToAction("r");
         }
 
-        // ✅ Hiển thị form chỉnh sửa tài khoản
         [HttpGet]
         public async Task<IActionResult> Edit(short id)
         {
@@ -98,7 +93,6 @@ namespace Net1728Group2MVC.Controllers
             return View(accountVM);
         }
 
-        // ✅ Xử lý cập nhật tài khoản
         [HttpPost]
         
         public async Task<IActionResult> Edit(AccountModel account)
@@ -119,7 +113,7 @@ namespace Net1728Group2MVC.Controllers
                     AccountName = account.AccountName,
                     AccountEmail = account.AccountEmail,
                     AccountPassword = account.AccountPassword,
-                    AccountRole = account.AccountRole // Lưu ý xử lý mật khẩu (hashing, encryption)
+                    AccountRole = account.AccountRole 
                 };
 
 
@@ -129,13 +123,11 @@ namespace Net1728Group2MVC.Controllers
             return View(account);
         }
 
- 
-        //D
+
         [HttpPost]
         public async Task<IActionResult> DisableAccount(short id)
         {
-            Console.WriteLine($"Disabling account with ID: {id}"); // Debug log
-
+            Console.WriteLine($"Disabling account with ID: {id}");
             await _accountService.DisableAccount(id);
             return RedirectToAction("Account");
         }
