@@ -25,24 +25,25 @@
 
             <div class="account-info d-flex align-items-center">
                 <div class="text-end me-3">
-                    <div class="fw-bold">@ViewBag.UserName</div>
-                    <div class="fw-normal text-muted">@ViewBag.UserEmail</div>
+                    @if(user != null ){
+                    <div class="fw-bold">@user.AccountName</div>
+                    <div class="fw-normal text-muted">@user.AccountEmail</div>
                     <div class="fw-light f text-muted">
-                        @if (ViewBag.Role == 1)
+                        @if (user.AccountRole == 1)
                         {
                             <i>Staff</i>
                         }
-                        else if (ViewBag.Role == 2)
+                        else if (user.AccountRole == 2)
                         {
                             <i>Lecturer</i>
                         }
-                        else if (ViewBag.Role == 0)
+                        else if (user.AccountRole == 0)
                         {
                             <i>Admin</i>
                         }
-                    </div>
+                    </div>}
                 </div>
-                @if (ViewBag.UserName != null)
+                @if (user != null)
                 {
                     <form asp-action="Logout" asp-controller="Auth" method="post">
                         <button class="btn btn-danger btn-sm" type="submit">Logout</button>
@@ -53,7 +54,7 @@
 
     </nav>
     <div class=" bg-gradient-primary-to-secondary">
-        <main role="main" class="pb-10 vh-100">
+        <main role="main" class="pb-10 min-vh-100 ">
             <header class="page-header page-header-dark pb-10">
                 @if (user == null)
                 {

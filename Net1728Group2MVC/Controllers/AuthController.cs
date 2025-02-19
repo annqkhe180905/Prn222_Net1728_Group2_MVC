@@ -46,7 +46,7 @@ namespace Net1728Group2MVC.Controllers
              HttpContext.Session.SetString("IsAuthenticated", "True");
 
              if (user.AccountRole == 1) return RedirectToAction("Category", "Staff");
-             else if (user.AccountRole == 2) return RedirectToAction("News", "Lecturer");
+             else if (user.AccountRole == 2) return RedirectToAction("Index", "Home");
              else if (user.AccountRole == 0) return RedirectToAction("Account", "Admin");
          }
 

@@ -48,8 +48,8 @@ namespace Net1728Group2MVC.Middleware
             var roleBasedRoutes = new Dictionary<int?, string[]>
             {
                 { 0, new[] { "/Admin", "/Admin/Account", "/Admin/Report", "/Auth/Logout" } }, 
-                { 1, new[] { "/Staff", "/Staff/Category", "/Staff/Profile", "/Staff/News", "/Staff/NewsTag", "/Auth/Logout" } }, 
-                { 2, new[] { "/Lecturer", "/Lecturer/News", "/Auth/Logout" } }
+                { 1, new[] { "/Staff", "/Staff/Category", "/Staff/Profile", "/Staff/News", "/Staff/NewsTag", "/Auth/Logout" } },
+                { 2, new[] { "/Lecturer", "/Home/Index", "/Home/Detail", "/Auth/Logout" } }
             };
 
             if (user != null && roleBasedRoutes.ContainsKey(user.AccountRole))
