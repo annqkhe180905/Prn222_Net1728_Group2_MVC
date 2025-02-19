@@ -25,11 +25,12 @@ namespace Net1728Group2MVC.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> NewsTag(string? search)
+        public async Task<IActionResult> NewsTag()
         {
-            
-            var tags = await _tagService.GetAllTagsAsync(search);
-            var tagModel = new TagModel { Tag = tags.ToList() };
+            ViewBag.Header = "News Tag Management";
+            var tagModel = new TagModel { 
+                Tag = await _tagService.GetAllTagsAsync()
+            };
             return View(tagModel);
         }
 

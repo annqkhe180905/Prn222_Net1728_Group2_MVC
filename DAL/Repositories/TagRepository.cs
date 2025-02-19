@@ -98,13 +98,8 @@ namespace DAL.Repositories
             }
         }
 
-        public async Task<IEnumerable<Tag>> GetAllTagsAsync(string keyword)
+        public async Task<IEnumerable<Tag>> GetAllTagsAsync()
         {
-            var query = _context.Tags.AsQueryable();
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                query = query.Where(t => t.TagName.Contains(keyword)); 
-            }
             return _context.Tags.ToList();
         }
     }

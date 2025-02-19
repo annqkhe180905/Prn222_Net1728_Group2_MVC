@@ -14,10 +14,10 @@ namespace BLL.Mapper
     {
         public MapperConfigure() 
         {
-            CreateMap<Category,CategoryVM> ();
-            CreateMap<NewsArticle,NewsArticleVM> ();    
-            CreateMap<Tag,TagVM> ();
-            CreateMap<SystemAccountVM,SystemAccountVM> ();
+            CreateMap<Category,CategoryVM> ().ReverseMap();
+            CreateMap<NewsArticle,NewsArticleVM> ().ReverseMap();
+            CreateMap<TagVM, Tag>().ReverseMap();
+            CreateMap<SystemAccountVM,SystemAccountVM> ().ReverseMap();
         }
     }
 

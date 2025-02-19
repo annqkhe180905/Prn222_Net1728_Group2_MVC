@@ -38,9 +38,9 @@ namespace BLL.Services
             return true;
         }
 
-        public async Task<IEnumerable<TagVM>> GetAllTagsAsync(string? search)
+        public async Task<IEnumerable<TagVM>> GetAllTagsAsync()
         {
-            var list = await _tagRepository.GetAllTagsAsync(search);
+            var list = await _tagRepository.GetAllTagsAsync();
             return _mapper.Map<List<TagVM>>(list);  
         }
 
