@@ -42,8 +42,8 @@ namespace BLL.Services
         public async Task<bool> RemoveAsync(int id)
         {
             var category = await _categoryRepository.FindAsync(id);
-
-            if (category == null)
+            bool anyArticleExist = await _categoryRepository.CheckIfHaveAnyArticle(category);
+            if (category == null || anyArticleExist)
                 return false;
 
             await _categoryRepository.RemoveAsync(category);

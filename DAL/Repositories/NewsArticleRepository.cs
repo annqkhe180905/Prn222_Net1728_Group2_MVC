@@ -13,7 +13,7 @@ namespace DAL.Repositories
     {
         private readonly FunewsManagementContext _dbContext;
 
-        public NewsArticleRepository (FunewsManagementContext dbContext)
+        public NewsArticleRepository(FunewsManagementContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -52,10 +52,17 @@ namespace DAL.Repositories
             return await _dbContext.NewsArticles.ToListAsync();
         }
 
+        public Task<IEnumerable<NewsArticle>> GetAllArticles()
+        {
+            throw new NotImplementedException();
+        }
+
+
         public async Task<NewsArticle> GetNewsArticleById(string id)
         {
             return await _dbContext.NewsArticles.FindAsync(id);
         }
+
 
         public async Task<NewsArticle> UpdateNewsArticle(NewsArticle news)
         {
@@ -69,5 +76,43 @@ namespace DAL.Repositories
         //        .Select(n => (short?)Convert.ToInt16(n.NewsArticleId)) // Convert to short
         //        .MaxAsync(); // Find max value
         //}
+
+
+        public async Task<List<NewsArticle>> GetAllNewsByDate(DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<NewsArticle>> GetNewsByCategoryAndDate(int categoryId, DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.CategoryId == categoryId && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<NewsArticle>> GetNewsByStatusAndDate(bool status, DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.NewsStatus == status && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<NewsArticle>> GetNewsByCreateByAndDate(int userId, DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.CreatedById == userId && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
     }
 }

@@ -1,26 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ReportModel
+
 <div class="container mt-4">
-    <div class="row p-0">
-        <div class="col-4 d-flex justify-content-between p-0">
-            <div class="form-group d-flex justify-content-between align-items-center">
-                <label for="startDate" class="col-5 text-black">Start Date:</label>
-                <input type="date" id="startDate" class="form-control" placeholder="Select start date">
-            </div>
+    <h2 class="text-center mb-4">News Report</h2>
+
+    <form method="get" class="row g-3 align-items-center mb-4">
+        <div class="col-4 d-flex align-items-center gap-3">
+            <label for="startDate" class="fw-bold w-25">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" class="form-control w-75"
+                   value="@ViewBag.StartDate?.ToString("yyyy-MM-dd")" required>
         </div>
-        <div class="col-4 d-flex justify-content-between p-0">
-            <div class="form-group d-flex justify-content-between align-items-center">
-                <label for="endDate" class="col-5 text-black">End Date:</label>
-                <input type="date" id="endDate" class="form-control" placeholder="Select end date">
-            </div>
+        <div class="col-4 d-flex align-items-center gap-3">
+            <label for="endDate" class="fw-bold w-25">End Date:</label>
+            <input type="date" id="endDate" name="endDate" class="form-control w-75"
+                   value="@ViewBag.EndDate?.ToString("yyyy-MM-dd")" required>
         </div>
-        <h5 class="mt-3 p-0 text-black">Total news: </h5>
-        <div>@ViewBag.TotalNews 11</div>
-        <h5 class="mt-3 p-0 text-black">Total news according to status: </h5>
-        <table class="border table-bordered custom-table">
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn bg-danger fw-bold text-white w-100">Generate Report</button>
+        </div>
+    </form>
+
+    <div class="alert alert-info text-center">
+        <h5 class="mb-0">Report Period: <strong>@Model.ReportPeriod</strong></h5>
+    </div>
+
+    <h5 class="mt-3 p-0 fw-bold">Total News: <span class="badge bg-gradient-primary-to-secondary">@Model.TotalNews</span></h5>
+
+    <h5 class="mt-3 p-0 fw-bold">Total News by Status:</h5>
+    <div class="datatable-container">
+        <table id="datatablesSimple" class="datatable-table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -29,70 +36,95 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Active</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Inactive</td>
-                    <td>10</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h5 class="mt-3 p-0 text-black">Total news according to category: </h5>
-        <table class="border table-bordered custom-table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Total News</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Tech</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Business</td>
-                    <td>10</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h5 class="mt-3 p-0 text-black">Total news with staff: </h5>
-        <table class="border table-bordered custom-table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Staff name</th>
-                    <th scope="col">Staff email</th>
-                    <th scope="col">Total News</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Hauhau</td>
-                    <td>1@gmail.com</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Nguyen Hau</td>
-                    <td>2@gmail.com</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Nguyen Hau Hau</td>
-                    <td>3@gmail.com</td>
-                </tr>
+                @if (Model.StatusReports.Any())
+                {
+                    int index = 1;
+                    @foreach (var item in Model.StatusReports)
+                    {
+                        <tr>
+                            <th scope="row">@index</th>
+                            <td>@item.Status</td>
+                            <td>@item.Count</td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">No data available</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
-</div>
+    
 
+    <h5 class="mt-3 p-0 fw-bold">Total News by Category:</h5>
+    <div class="datatable-container">
+        <table id="datatablesSimple" class="datatable-table">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category</th>
+                <th scope="col">Total News</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.CategoryReports.Any())
+            {
+                int index = 1;
+                @foreach (var item in Model.CategoryReports)
+                {
+                    <tr>
+                        <th scope="row">@index</th>
+                        <td>@item.CategoryName</td>
+                        <td>@item.Count</td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center text-muted">No data available</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </<div>
+
+    <h5 class="mt-3 p-0 fw-bold">Total News by Creator:</h5>
+    <div class="datatable-container">
+        <table id="datatablesSimple" class="datatable-table">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Created By</th>
+                <th>Email</th>
+                <th>Total News</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.CreatorReports.Any())
+            {
+                int index = 1;
+                @foreach (var item in Model.CreatorReports)
+                {
+                    <tr>
+                        <th>@index</th>
+                        <td>@item.CreatorName</td>
+                        <td>@item.CreatorEmail</td>
+                        <td>@item.Count</td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr><td colspan="4" class="text-center text-muted">No data available</td></tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
