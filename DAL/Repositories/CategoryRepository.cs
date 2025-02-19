@@ -79,5 +79,18 @@ namespace DAL.Repositories
                 return false;
             }
         }
+
+        public async Task<bool> CheckIfHaveAnyArticle(Category category)
+        {
+            try
+            {
+                bool any = await _context.NewsArticles.AnyAsync(x => x.CategoryId == category.CategoryId);
+                return any;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

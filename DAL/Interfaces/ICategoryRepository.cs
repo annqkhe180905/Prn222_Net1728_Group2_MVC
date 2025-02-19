@@ -16,5 +16,6 @@ namespace DAL.Interfaces
         Task<Category>? FindAsync(int id);
         Task<bool> RemoveAsync(Category category);
         Task<bool> UpdateAsync(Category existCategory);
+        Task<bool> CheckIfHaveAnyArticle(Category category);
     }
 }
