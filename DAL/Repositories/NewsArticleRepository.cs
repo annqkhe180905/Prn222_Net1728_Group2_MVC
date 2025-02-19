@@ -20,16 +20,9 @@ namespace DAL.Repositories
 
         public async Task<NewsArticle> CreateNewsArticle(NewsArticle news)
         {
-            try
-            {
-                _dbContext.NewsArticles.Add(news);
-                await _dbContext.SaveChangesAsync();
-                return news;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            _dbContext.NewsArticles.Add(news);
+            await _dbContext.SaveChangesAsync();
+            return news;
         }
 
         public async Task<bool> DeleteNewsArticle(NewsArticle news)
@@ -59,15 +52,9 @@ namespace DAL.Repositories
 
         public async Task<NewsArticle> UpdateNewsArticle(NewsArticle news)
         {
-            return null;
+            _dbContext.NewsArticles.Update(news);
+            await _dbContext.SaveChangesAsync();
+            return news;
         }
-
-        //public async Task<short?> GetMaxNewsArticleIdAsync()
-        //{
-        //    return await _dbContext.NewsArticles
-        //        .Where(n => short.TryParse(n.NewsArticleId, out _))  // Filter IDs that can be parsed to short
-        //        .Select(n => (short?)Convert.ToInt16(n.NewsArticleId)) // Convert to short
-        //        .MaxAsync(); // Find max value
-        //}
     }
 }

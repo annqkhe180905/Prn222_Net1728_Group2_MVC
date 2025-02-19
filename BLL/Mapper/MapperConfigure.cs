@@ -15,7 +15,7 @@ namespace BLL.Mapper
         public MapperConfigure() 
         {
             CreateMap<Category,CategoryVM> ();
-            CreateMap<NewsArticle,NewsArticleVM> ();    
+            CreateMap<NewsArticle,NewsArticleVM> ().ReverseMap();   
             CreateMap<Tag,TagVM> ();
             CreateMap<SystemAccountVM,SystemAccountVM> ();
         }

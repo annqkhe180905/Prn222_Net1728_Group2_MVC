@@ -31,6 +31,5 @@ namespace BLL.DTOs
         public DateTime? ModifiedDate { get; set; }
 
         public List<int>? TagIds { get; set; }
-
     }
 }
