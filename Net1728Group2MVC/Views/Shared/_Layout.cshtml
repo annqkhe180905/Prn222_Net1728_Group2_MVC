@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Net1728Group2MVC</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Net1728Group2MVC.styles.css" asp-append-version="true" />
@@ -43,9 +44,9 @@
         </div>
 
     </nav>
-    <div class="" id="layoutSidenav_content">
-        <main role="main" class="pb-3">
-            <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+    <div class=" bg-gradient-primary-to-secondary">
+        <main role="main" class="pb-10">
+            <header class="page-header page-header-dark pb-10">
                 <div class="container-xl px-4">
                     <div class="page-header-content pt-4">
                         <div class="row align-items-center justify-content-between">
@@ -54,8 +55,8 @@
                                     <form method="get">
                                         @if (ViewBag.Role == 1)
                                         {
-                                            <button class="custom-btn mx-2">Category Management</button>
-                                            <button class="custom-btn mx-2">News Management</button>
+                                            <button class="custom-btn mx-2" type="submit" asp-controller="staff" asp-action="category">Category Management</button>
+                                            <button class="custom-btn mx-2" type="submit" asp-controller="staff" asp-action="news">News Management</button>
                                             <button class="custom-btn mx-2">Profile Management</button>
                                         }
                                         else if (ViewBag.Role == 2)
@@ -74,7 +75,6 @@
                     </div>
                 </div>
             </header>
-
             <div class="container-xl px-4 mt-n10">
                 <div class="card">
                     @if (ViewBag.Header != null)
@@ -97,11 +97,11 @@
         </main>
     </div>
 
-    @*     <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" id="layoutSidenav_content">
     <div class="container">
-    &copy; 2025 - FuNewsManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    &copy; 2025 - FuNewsManagement
     </div>
-    </footer> *@
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 *, *::before, *::after {
@@ -44,7 +44,6 @@ fixed .topnav {
     top: 0;
     right: 0;
     left: 0;
-
 }
 
 .topnav {
@@ -52,6 +51,7 @@ fixed .topnav {
     height: 3.625rem;
     font-size: 0.9rem;
 }
+
     .topnav .navbar-brand {
         width: 15rem;
         margin: 0;
@@ -59,9 +59,11 @@ fixed .topnav {
         font-weight: bold;
         white-space: nowrap;
     }
+
     .topnav.navbar-light .navbar-brand {
         color: #363d47;
     }
+
 .navbar {
     height: 3.625rem;
     font-size: 0.9rem;
@@ -159,6 +161,7 @@ header {
     background-color: rgba(33, 40, 50, 0.03);
     border-bottom: 1px solid rgba(33, 40, 50, 0.125);
 }
+
 .card-body {
     flex: 1 1 auto;
     padding: 1.35rem 1.35rem;
@@ -180,13 +183,13 @@ header {
     border: none;
 }
 
-    .custom-btn:hover{
+    .custom-btn:hover {
         opacity: 0.8;
     }
 
-    .btn:hover {
-        opacity: 0.8;
-    }
+.btn:hover {
+    opacity: 0.8;
+}
 
 .mx-2 {
     margin-left: 0.5rem;
@@ -194,14 +197,84 @@ header {
 }
 
 .custom-table {
-    border: 3px solid black; /* Increase border weight */
-    border-radius: 10px; /* Round the corners */
-    border-collapse: separate; /* Ensure the border-radius applies properly */
-    overflow: hidden; /* Hide any overflowed content when border-radius is applied */
+    border: 3px solid black;
+    overflow: hidden;
 }
 
     .custom-table th, .custom-table td {
-        padding: 10px; /* Add padding for better readability */
+        padding: 10px;
     }
 
 
+
+.alert-info {
+    color: #ffffff;
+    background-color: #F5643A;
+    border-color: #b6effb;
+}
+
+.alert {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+
+.datatable-wrapper .datatable-container {
+    font-size: 0.875rem;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table, .datatable-table {
+    --bs-table-color: #fffff;
+    --bs-table-bg: #fff;
+    --bs-table-border-color: #E0E5EC;
+    --bs-table-hover-bg: #F7F9FA;
+    width: 100%;
+    margin-bottom: 1rem;
+    color: var(--bs-table-color);
+    vertical-align: middle;
+    border: 1px solid var(--bs-table-border-color);
+    border-collapse: collapse;
+}
+
+    .table th, .table td,
+    .datatable-table th, .datatable-table td {
+        border: 1px solid var(--bs-table-border-color); 
+        padding: 8px;
+        text-align: center;
+    }
+
+    .datatable-table > thead > tr > th {
+        background-color: #ffffff;
+        color: #6A707B;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+        border-bottom: 2px solid var(--bs-table-border-color);
+    }
+
+    .datatable-table tbody tr:hover {
+        background-color: var(--bs-table-hover-bg);
+    }
+
+th, td {
+    text-align: center;
+}
+
+.datatable-table {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+    .datatable-table tbody tr.no-data {
+        background-color: #f8f9fa;
+        text-align: center;
+        color: #6c757d;
+        font-style: italic;
+    }

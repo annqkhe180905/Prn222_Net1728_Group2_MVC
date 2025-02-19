@@ -1,4 +1,6 @@
-﻿namespace Net1728Group2MVC.Models
+﻿using BLL.DTOs;
+
+namespace Net1728Group2MVC.Models
 {
     public class NewsArticleControllerModel
     {
@@ -25,5 +27,7 @@
         public DateTime? ModifiedDate { get; set; }
 
         public List<int> TagIds { get; set; } = new List<int>();
+
+        public IEnumerable<NewsArticleVM>? NewsArticles { get; set; }
     }
 }

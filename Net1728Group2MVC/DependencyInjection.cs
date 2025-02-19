@@ -13,8 +13,11 @@ namespace Net1728Group2MVC
             
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<INewsArticleRepository, NewsArticleRepository>();
             services.AddScoped<INewsArticleService, NewsArticleService>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddSingleton<AdminAccount>();
         }
     }

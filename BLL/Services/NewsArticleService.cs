@@ -25,10 +25,15 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, string? createdBy)
+        {
+            return await _newsArticleRepository.SearchArticles(search, categoryId, tagIds, createdBy);
+        }
+
         public async Task<NewsArticle> CreateNewsArticle(NewsArticleVM model)
         {
             var newsArticle = _mapper.Map<NewsArticle>(model);
-
+            model.CreatedDate = DateTime.Now;
             await _newsArticleRepository.CreateNewsArticle(newsArticle);
 
             return newsArticle;
@@ -67,6 +72,7 @@ namespace BLL.Services
                 return null;
             }
             updateArticle = _mapper.Map(news, updateArticle);
+            updateArticle.ModifiedDate = DateTime.Now;
             await _newsArticleRepository.UpdateNewsArticle(updateArticle);
             return updateArticle;
         }

@@ -13,7 +13,7 @@ namespace DAL.Repositories
     {
         private readonly FunewsManagementContext _dbContext;
 
-        public NewsArticleRepository (FunewsManagementContext dbContext)
+        public NewsArticleRepository(FunewsManagementContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -45,10 +45,17 @@ namespace DAL.Repositories
             return await _dbContext.NewsArticles.ToListAsync();
         }
 
+        public Task<IEnumerable<NewsArticle>> GetAllArticle()
+        {
+            throw new NotImplementedException();
+        }
+
+
         public async Task<NewsArticle> GetNewsArticleById(string id)
         {
             return await _dbContext.NewsArticles.FindAsync(id);
         }
+
 
         public async Task<NewsArticle> UpdateNewsArticle(NewsArticle news)
         {
@@ -56,5 +63,67 @@ namespace DAL.Repositories
             await _dbContext.SaveChangesAsync();
             return news;
         }
+
+        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, string? createdBy)
+        {
+            var query = _dbContext.NewsArticles
+                .Include(n => n.Category)
+                .Include(n => n.CreatedBy)
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(n => n.NewsTitle.Contains(search) || n.NewsContent.Contains(search));
+            }
+            if (categoryId.HasValue)
+            {
+                query = query.Where(n => n.CategoryId == categoryId);
+            }
+            if (tagIds != null && tagIds.Any())
+            {
+                query = query.Where(n => n.Tags.Any(t => tagIds.Contains(t.TagId)));
+            }
+            //if (!string.IsNullOrEmpty(createdBy))
+            //{
+            //    query = query.Where(n => n.CreatedBy.UserName == createdBy);
+            //}
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<NewsArticle>> GetAllNewsByDate(DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<NewsArticle>> GetNewsByCategoryAndDate(int categoryId, DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.CategoryId == categoryId && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<NewsArticle>> GetNewsByStatusAndDate(bool status, DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.NewsStatus == status && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<NewsArticle>> GetNewsByCreateByAndDate(int userId, DateTime startDate, DateTime endDate)
+        {
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+        .Include(n => n.CreatedBy)
+                .Where(n => n.CreatedById == userId && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                .ToListAsync();
+        }
+
     }
 }

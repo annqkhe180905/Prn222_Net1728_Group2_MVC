@@ -18,6 +18,18 @@ namespace Net1728Group2MVC.Controllers
             _mapper = mapper;
         }
 
+        public async Task<IActionResult> Index(string? search, int? categoryId, List<int>? tagIds, string? createdBy)
+        {
+            var model = await _newsArticleService.SearchArticles(search, categoryId, tagIds, createdBy);
+            return View(model);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var article = await _newsArticleService.GetNewsArticleById(id);
+            return View(article);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateNewsArticle(NewsArticleControllerModel model)
         {
