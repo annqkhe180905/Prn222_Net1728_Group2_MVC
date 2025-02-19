@@ -20,16 +20,9 @@ namespace DAL.Repositories
 
         public async Task<NewsArticle> CreateNewsArticle(NewsArticle news)
         {
-            try
-            {
-                _dbContext.NewsArticles.Add(news);
-                await _dbContext.SaveChangesAsync();
-                return news;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            _dbContext.NewsArticles.Add(news);
+            await _dbContext.SaveChangesAsync();
+            return news;
         }
 
         public async Task<bool> DeleteNewsArticle(NewsArticle news)
@@ -43,16 +36,19 @@ namespace DAL.Repositories
         public async Task<IEnumerable<NewsArticle>> GetAllActiveArticles()
         {
             return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+                .Include(n => n.CreatedBy)
                 .Where(n => n.NewsStatus == true)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<NewsArticle>> GetAllArticle()
+        public async Task<IEnumerable<NewsArticle>> GetAllArticles()
         {
-            return await _dbContext.NewsArticles.ToListAsync();
+            return await _dbContext.NewsArticles.Include(n => n.Category)
+                .Include(n => n.CreatedBy).ToListAsync();
         }
 
-        public Task<IEnumerable<NewsArticle>> GetAllArticles()
+        public Task<IEnumerable<NewsArticle>> GetAllArticle()
         {
             throw new NotImplementedException();
         }
@@ -60,23 +56,43 @@ namespace DAL.Repositories
 
         public async Task<NewsArticle> GetNewsArticleById(string id)
         {
-            return await _dbContext.NewsArticles.FindAsync(id);
+            return await _dbContext.NewsArticles.Include(n => n.Category)
+                .Include(n => n.CreatedBy).FirstOrDefaultAsync(n => n.NewsArticleId == id);
+
         }
 
 
         public async Task<NewsArticle> UpdateNewsArticle(NewsArticle news)
         {
-            return null;
+            _dbContext.NewsArticles.Update(news);
+            await _dbContext.SaveChangesAsync();
+            return news;
         }
 
-        //public async Task<short?> GetMaxNewsArticleIdAsync()
-        //{
-        //    return await _dbContext.NewsArticles
-        //        .Where(n => short.TryParse(n.NewsArticleId, out _))  // Filter IDs that can be parsed to short
-        //        .Select(n => (short?)Convert.ToInt16(n.NewsArticleId)) // Convert to short
-        //        .MaxAsync(); // Find max value
-        //}
-
+        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, string? createdBy)
+        {
+            var query = _dbContext.NewsArticles
+                .Include(n => n.Category)
+                .Include(n => n.CreatedBy)
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(n => n.NewsTitle.Contains(search) || n.NewsContent.Contains(search));
+            }
+            if (categoryId.HasValue)
+            {
+                query = query.Where(n => n.CategoryId == categoryId);
+            }
+            if (tagIds != null && tagIds.Any())
+            {
+                query = query.Where(n => n.Tags.Any(t => tagIds.Contains(t.TagId)));
+            }
+            //if (!string.IsNullOrEmpty(createdBy))
+            //{
+            //    query = query.Where(n => n.CreatedBy.UserName == createdBy);
+            //}
+            return await query.ToListAsync();
+        }
 
         public async Task<List<NewsArticle>> GetAllNewsByDate(DateTime startDate, DateTime endDate)
         {

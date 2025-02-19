@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model NewsArticleControllerModel
+
+<div>
+    <h5>@Model.NewsTitle</h5>
+    <p><strong>Headline:</strong> @Model.Headline</p>
+    <p><strong>Created Date:</strong> @Model.CreatedDate?.ToString("dd/MM/yyyy")</p>
+    <p><strong>Content:</strong> @Model.NewsContent</p>
+    <p><strong>Source:</strong> @Model.NewsSource</p>
+    <p><strong>Category:</strong> @Model.CategoryName</p>
+    <p><strong>Created By:</strong> @Model.CreatedBy</p>
+    <p><strong>Status:</strong> @if (Model.NewsStatus == true)
+        {
+            <span>Active</span>
+        }
+        else
+        {
+            <span>Inactive</span>
+        }</p>
+    <p><strong>Modified Date:</strong> @Model.ModifiedDate?.ToString("dd/MM/yyyy")</p>
+</div>

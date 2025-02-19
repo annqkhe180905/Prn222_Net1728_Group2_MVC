@@ -11,21 +11,27 @@ namespace Net1728Group2MVC.Controllers
     public class StaffController : BaseController
     {
         private readonly ICategoryService _categoryService;
+        private readonly INewsArticleService _newsArticleService;
         private readonly IMapper _mapper;
         private readonly ITagService _tagService;
 
-        public StaffController(ICategoryService categoryService, IMapper mapper, IAccountService accountService, ITagService tagServcie)
+        public StaffController(ICategoryService categoryService, IMapper mapper, IAccountService accountService, ITagService tagServcie, INewsArticleService newsArticleService)
         {
             _categoryService = categoryService;
             _mapper = mapper;
             _accountService = accountService;
             _tagService = tagServcie;
-
-
+            _newsArticleService = newsArticleService;
         }
-        public IActionResult News()
+        public async Task<IActionResult> News()
         {
-            return View();
+            ViewBag.Header = "News Management";
+            var newsArticles = await _newsArticleService.GetAllArticle();
+            var newsArticleControllerModel = new NewsArticleControllerModel()
+            {
+                NewsArticles = _mapper.Map<IEnumerable<NewsArticleVM>>(newsArticles)
+            };
+            return View(newsArticleControllerModel);
         }
         public async Task<IActionResult> Category(string? search)
         {

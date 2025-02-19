@@ -21,16 +21,17 @@ namespace BLL.DTOs
         public string? NewsSource { get; set; }
 
         public short? CategoryId { get; set; }
-
+       
+        public string? CategoryName { get; set; }
         public bool? NewsStatus { get; set; }
 
         public short? CreatedById { get; set; }
+        public string? CreatedBy { get; set; }
 
         public short? UpdatedById { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
 
         public List<int>? TagIds { get; set; }
-
     }
 }

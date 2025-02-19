@@ -13,6 +13,9 @@
 {
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
+@{
+    var user = Context.Items["User"] as AccountModel;
+}
 
 <body class="nav-fixed sidenav-toggled">
     <nav class="topnav navbar navbar-expand shadow  justify-content-between justify-content-sm-start navbar-light bg-white" id="sidenavAccordion">
@@ -52,6 +55,14 @@
     <div class=" bg-gradient-primary-to-secondary">
         <main role="main" class="pb-10 vh-100">
             <header class="page-header page-header-dark pb-10">
+                @if (user == null)
+                {
+                    <div class="row justify-content-center pt-3">
+                        <form asp-controller="Auth" asp-action="Login" method="get" class="col-3">
+                            <button class="custom-btn w-100" type="submit">Login</button>
+                        </form>
+                    </div>
+                }
                 <div class="container-xl px-4">
                     <div class="page-header-content pt-4">
                         <div class="row align-items-center justify-content-between">
@@ -61,7 +72,7 @@
                                         @if (ViewBag.Role == 1)
                                         {
                                             <button class="custom-btn mx-2" type="submit" asp-controller="staff" asp-action="category">Category Management</button>
-                                            <button class="custom-btn mx-2">News Management</button>
+                                            <button class="custom-btn mx-2" type="submit" asp-controller="staff" asp-action="news">News Management</button>
                                              <button asp-controller="Staff" asp-action="NewsTag"  class="custom-btn mx-2">
                                                  News Tag Management
                                              </button>

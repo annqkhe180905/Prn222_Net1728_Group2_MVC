@@ -15,7 +15,9 @@ namespace BLL.Mapper
         public MapperConfigure() 
         {
             CreateMap<Category,CategoryVM> ().ReverseMap();
-            CreateMap<NewsArticle,NewsArticleVM> ().ReverseMap();
+            CreateMap<NewsArticle, NewsArticleVM>()
+           .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName)) 
+           .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy.AccountName)).ReverseMap(); 
             CreateMap<TagVM, Tag>().ReverseMap();
             CreateMap<SystemAccountVM,SystemAccountVM> ().ReverseMap();
         }
