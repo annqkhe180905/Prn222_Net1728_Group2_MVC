@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
 using BLL.Interfaces;
+using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Net1728Group2MVC.Models;
 using Newtonsoft.Json;
@@ -11,11 +12,15 @@ namespace Net1728Group2MVC.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
-        public StaffController(ICategoryService categoryService, IMapper mapper, IAccountService accountService)
+        private readonly ITagService _tagService;
+
+        public StaffController(ICategoryService categoryService, IMapper mapper, IAccountService accountService, ITagService tagServcie)
         {
             _categoryService = categoryService;
             _mapper = mapper;
             _accountService = accountService;
+            _tagService = tagServcie;
+
 
         }
         public IActionResult News()
@@ -144,6 +149,14 @@ namespace Net1728Group2MVC.Controllers
 
             // Nếu có lỗi validation, hiển thị lại trang edit với thông tin đã nhập
             return View(updatedAccount);
+        }
+        public async Task<IActionResult> NewsTag(string? search)
+        {
+            ViewBag.Header = "News Tag Management";
+            var tagModel = new TagModel { 
+                Tag = await _tagService.GetAllTagsAsync(search)
+            };
+            return View(tagModel);
         }
 
     }

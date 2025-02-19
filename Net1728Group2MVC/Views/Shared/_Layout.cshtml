@@ -62,6 +62,9 @@
                                         {
                                             <button class="custom-btn mx-2" type="submit" asp-controller="staff" asp-action="category">Category Management</button>
                                             <button class="custom-btn mx-2">News Management</button>
+                                             <button asp-controller="Staff" asp-action="NewsTag"  class="custom-btn mx-2">
+                                                 News Tag Management
+                                             </button>
                                             <button class="custom-btn mx-2" type="submit" asp-action="Profile" asp-controller="Staff">Profile Management</button>
                                         }
                                         else if (ViewBag.Role == 2)

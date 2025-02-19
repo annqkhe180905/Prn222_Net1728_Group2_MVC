@@ -18,6 +18,8 @@ namespace Net1728Group2MVC
             services.AddScoped<INewsArticleRepository, NewsArticleRepository>();
             services.AddScoped<INewsArticleService, NewsArticleService>();
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<ITagRepository, TagRepository>();
             services.AddSingleton<AdminAccount>();
         }
     }
