@@ -58,10 +58,11 @@ namespace DAL.Repositories
             // Truy vấn dữ liệu từ cơ sở dữ liệu
             return await _context.SystemAccounts.FirstOrDefaultAsync(x => x.AccountId == accountId);
         }
-
         public async Task<List<SystemAccount>> GetAllAsync()
         {
-            return await _context.SystemAccounts.ToListAsync();
+            var list = await _context.SystemAccounts.ToListAsync();
+            list.Reverse(); // Đảo ngược danh sách
+            return list;
         }
 
         // Cập nhật tài khoản

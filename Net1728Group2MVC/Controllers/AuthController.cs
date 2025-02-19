@@ -36,27 +36,21 @@ namespace Net1728Group2MVC.Controllers
 
                 if (user != null)
                 {
+                    if (user.AccountRole == 3)
+                    {
+                        ViewBag.ErrorLoginMessage = "Your account has been disabled!";
+                        return View(loginModel);
+                    }
+
                     HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
                     HttpContext.Session.SetString("IsAuthenticated", "True");
 
-                    if (user.AccountRole == 1 ) return RedirectToAction("Category", "Staff");
+                    if (user.AccountRole == 1) return RedirectToAction("Category", "Staff");
                     else if (user.AccountRole == 2) return RedirectToAction("News", "Lecturer");
                     else if (user.AccountRole == 0) return RedirectToAction("Account", "Admin");
-                    else if (user.AccountRole == 3)
-                    {
-                        
-                        return RedirectToAction("Login", "Auth");
-
-                    }
-
-
                 }
-            
-              
-                    ViewBag.ErrorLoginMessage = "Invalid email or password!";
 
-              
-
+                ViewBag.ErrorLoginMessage = "Invalid email or password!";
             }
 
             return View(loginModel);

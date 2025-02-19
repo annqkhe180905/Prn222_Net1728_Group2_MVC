@@ -46,36 +46,35 @@ namespace Net1728Group2MVC.Controllers
         }
 
 
-        
+
 
         // ✅ Xử lý tạo tài khoản
         [HttpPost]
         public async Task<IActionResult> Create(AccountModel account)
         {
-
             if (!await _accountService.IsEmailUniqueAsync(account.AccountEmail))
             {
                 TempData["ErrorMessage"] = "Email already exists!";
                 return RedirectToAction("Account");
             }
 
-
             if (ModelState.IsValid)
             {
                 var systemAccountVM = new SystemAccountVM
                 {
-
                     AccountName = account.AccountName,
                     AccountEmail = account.AccountEmail,
                     AccountPassword = account.AccountPassword,
-                    AccountRole = account.AccountRole // Lưu ý xử lý mật khẩu (hashing, encryption)
+                    AccountRole = account.AccountRole
                 };
 
                 await _accountService.CreateAccountAsync(systemAccountVM);
+                TempData["SuccessMessage"] = "Account created successfully!";
                 return RedirectToAction("Account");
             }
-            return RedirectToAction("r");
+            return RedirectToAction("Account");
         }
+
 
         // ✅ Hiển thị form chỉnh sửa tài khoản
         [HttpGet]
@@ -100,10 +99,8 @@ namespace Net1728Group2MVC.Controllers
 
         // ✅ Xử lý cập nhật tài khoản
         [HttpPost]
-        
         public async Task<IActionResult> Edit(AccountModel account)
         {
-
             var existingAccount = await _accountService.GetAccountByEmailAsync(account.AccountEmail);
             if (existingAccount != null && existingAccount.AccountId != account.AccountId)
             {
@@ -119,17 +116,18 @@ namespace Net1728Group2MVC.Controllers
                     AccountName = account.AccountName,
                     AccountEmail = account.AccountEmail,
                     AccountPassword = account.AccountPassword,
-                    AccountRole = account.AccountRole // Lưu ý xử lý mật khẩu (hashing, encryption)
+                    AccountRole = account.AccountRole
                 };
 
-
                 await _accountService.UpdateAccountAsync(systemAccountVM);
+                TempData["SuccessMessage"] = "Account updated successfully!";
                 return RedirectToAction("Account");
             }
             return View(account);
         }
 
- 
+
+
         //D
         [HttpPost]
         public async Task<IActionResult> DisableAccount(short id)
@@ -137,8 +135,10 @@ namespace Net1728Group2MVC.Controllers
             Console.WriteLine($"Disabling account with ID: {id}"); // Debug log
 
             await _accountService.DisableAccount(id);
+            TempData["SuccessMessage"] = "Account disabled successfully!";
             return RedirectToAction("Account");
         }
+
 
 
 
