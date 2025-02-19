@@ -11,7 +11,8 @@ namespace BLL.Interfaces
     public interface INewsArticleService
     {
         Task<IEnumerable<NewsArticle>> GetAllActiveArticles();
-        Task<IEnumerable<NewsArticle>> GetAllArticle();
+        Task<IEnumerable<NewsArticle>> GetAllArticles();
+        Task<IEnumerable<NewsArticleVM>> GetAllArticle(string? search);
         Task<NewsArticle> GetNewsArticleById(string id);
         Task<NewsArticle> CreateNewsArticle(NewsArticleVM model);
         Task<NewsArticle> UpdateNewsArticle(NewsArticleVM news);

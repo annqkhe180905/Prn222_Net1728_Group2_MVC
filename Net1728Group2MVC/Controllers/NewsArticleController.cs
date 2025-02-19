@@ -22,7 +22,7 @@ namespace Net1728Group2MVC.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(string? search, int? categoryId, List<int>? tagIds, short? createdBy)
+        public async Task<IActionResult> Search(string? search, int? categoryId, List<int>? tagIds, short? createdBy)
         {
             var jsonString = HttpContext.Session.GetString("User");
             var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
@@ -48,7 +48,7 @@ namespace Net1728Group2MVC.Controllers
             var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
             model.CreatedById = user.AccountId;
             var news = _mapper.Map<NewsArticleVM>(model);         
-            await _newsArticleService.UpdateNewsArticle(news);
+            await _newsArticleService.CreateNewsArticle(news);
             return RedirectToAction("Index", "Home");
         }
         
@@ -87,7 +87,7 @@ namespace Net1728Group2MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllNewsArticle()
         {
-            var newsList = await _newsArticleService.GetAllArticle();
+            var newsList = await _newsArticleService.GetAllArticles();
             return View(newsList);
         }
 

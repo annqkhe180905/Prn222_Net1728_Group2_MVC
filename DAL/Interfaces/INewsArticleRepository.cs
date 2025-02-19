@@ -11,6 +11,7 @@ namespace DAL.Interfaces
     {
         Task<IEnumerable<NewsArticle>> GetAllActiveArticles();
         Task<IEnumerable<NewsArticle>> GetAllArticles();
+        Task<IEnumerable<NewsArticle>> GetAllArticle(string? search);
         Task<NewsArticle> GetNewsArticleById(string id);
         Task <NewsArticle> CreateNewsArticle(NewsArticle news);
         Task <NewsArticle> UpdateNewsArticle(NewsArticle news);

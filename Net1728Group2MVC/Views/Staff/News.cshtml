@@ -1,11 +1,11 @@
 ﻿@using Net1728Group2MVC.Models
 @{
-    ViewData["Title"] = "Manage News Articles";
+    // ViewData["Title"] = "Manage News Articles";
 }
 @model NewsArticleControllerModel
 
 <div class="d-flex align-items-center gap-2 my-2 w-100 h-100">
-    <form class="d-flex h-100" method="get" action="@Url.Action("Index", "NewsArticle")">
+    <form class="d-flex h-100" method="get" action="@Url.Action("News", "Staff")">
         <div class="input-group">
             <input type="text" class="form-control" name="search" value="@Context.Request.Query["search"]" placeholder="Search articles..." />
             <button class="btn btn-outline-dark btn-danger text-white fw-bold" type="submit">
@@ -26,6 +26,7 @@
                 <th class="p-3 text-center">Title</th>
                 <th class="p-3 text-center">Headline</th>
                 <th class="p-3 text-center">Category</th>
+                <th class="p-3 text-center">Tags</th>
                 <th class="p-3 text-center">Status</th>
                 <th class="p-3 text-center">Action</th>
             </tr>
@@ -40,12 +41,12 @@
                         <td class="text-center">@article.Headline</td>
                         <!-- Show Category Name -->
                         <td class="text-center">
-                            <!--  -->
+                            <!--  -->@article.CategoryId
                         </td>
 
                         <!-- Show Tag Names -->
                         <td class="text-center">
-                            <!--  -->
+                            <!--  -->@article.TagIds
                         </td>
                         <td class="text-center">
                             <span class="badge @(article.NewsStatus == true ? "bg-success" : "bg-danger")">
@@ -63,6 +64,7 @@
                                     data-content="@article.NewsContent"
                                     data-category="@article.CategoryId"
                                     data-status="@article.NewsStatus"
+                                    data-tags="@article.TagIds"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editNewsArticleModal">
                                 <i class="bi bi-pencil-square"></i>
@@ -83,7 +85,7 @@
                 <h4>Add News Article</h4>
             </div>
             <div class="modal-body">
-                <form id="newsArticleForm" method="post" action="@Url.Action("CreateNewsArticle", "NewsArticle")">
+                <form id="newsArticleForm" method="post" action="@Url.Action("News", "Staff")">
                     <label>Title</label>
                     <input name="NewsTitle" class="form-control" required maxlength="200" />
 
@@ -95,10 +97,10 @@
 
                     <label>Category</label>
                     <select name="CategoryId" class="form-control">
-@*                         @foreach (var category in )
+                        @*@foreach (var category in Model.Categories)
                         {
                             <option value="@category.CategoryId">@category.CategoryName</option>
-                        } *@
+                        }*@
                     </select>
 
                     <label>Tags</label>
@@ -124,7 +126,7 @@
                 <h4>Edit News Article</h4>
             </div>
             <div class="modal-body">
-                <form id="editNewsArticleForm" method="post" action="@Url.Action("UpdateNewsArticle", "NewsArticle")">
+                <form id="editNewsArticleForm" method="post" action="@Url.Action("News", "Staff")">
                     <input type="hidden" name="NewsArticleId" id="editNewsId" />
 
                     <label>Title</label>
@@ -159,7 +161,7 @@
     </div>
 </div>
 
-<script>
+<script src="~/js/category.js">
 
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".editNewsArticleButton").forEach(button => {

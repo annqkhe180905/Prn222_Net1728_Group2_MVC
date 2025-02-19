@@ -52,15 +52,24 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
-        public Task<IEnumerable<NewsArticle>> GetAllArticle()
+        public async Task<IEnumerable<NewsArticle>> GetAllArticle(string? search)
         {
-            throw new NotImplementedException();
+            var query = _dbContext.NewsArticles.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(n => n.NewsTitle.Contains(search) || n.NewsContent.Contains(search));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<NewsArticle> GetNewsArticleById(string id)
         {
-            return await _dbContext.NewsArticles.Include(n => n.Category)
-                .Include(n => n.CreatedBy).Include(n => n.Tags)
+            return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+                .Include(n => n.CreatedBy)
+                .Include(n => n.Tags)
                 .FirstOrDefaultAsync(n => n.NewsArticleId == id);
 
         }

@@ -23,13 +23,22 @@ namespace Net1728Group2MVC.Controllers
             _tagService = tagServcie;
             _newsArticleService = newsArticleService;
         }
-        public async Task<IActionResult> News()
+        //public async Task<IActionResult> News()
+        //{
+        //    ViewBag.Header = "News Management";
+        //    var newsArticles = await _newsArticleService.GetAllArticle();
+        //    var newsArticleControllerModel = new NewsArticleControllerModel()
+        //    {
+        //        NewsArticles = _mapper.Map<IEnumerable<NewsArticleVM>>(newsArticles)
+        //    };
+        //    return View(newsArticleControllerModel);
+        //}
+        public async Task<IActionResult> News(string? search)
         {
-            ViewBag.Header = "News Management";
-            var newsArticles = await _newsArticleService.GetAllArticle();
+            ViewBag.Header = "News Management";        
             var newsArticleControllerModel = new NewsArticleControllerModel()
             {
-                NewsArticles = _mapper.Map<IEnumerable<NewsArticleVM>>(newsArticles)
+                NewsArticles = await _newsArticleService.GetAllArticle(search)
             };
             return View(newsArticleControllerModel);
         }

@@ -59,9 +59,15 @@ namespace BLL.Services
             return await _newsArticleRepository.GetNewsArticleById(id);
         }
 
-        public async Task<IEnumerable<NewsArticle>> GetAllArticle()
+        public async Task<IEnumerable<NewsArticle>> GetAllArticles()
         {
             return await _newsArticleRepository.GetAllArticles();
+        }
+
+        public async Task<IEnumerable<NewsArticleVM>> GetAllArticle(string? search)
+        {
+            var list = await _newsArticleRepository.GetAllArticle(search);
+            return _mapper.Map<IEnumerable<NewsArticleVM>>(list);
         }
 
         public async Task<NewsArticle> UpdateNewsArticle(NewsArticleVM news)
