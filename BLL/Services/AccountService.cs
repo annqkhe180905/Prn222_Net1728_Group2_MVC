@@ -83,7 +83,7 @@ namespace BLL.Services
                 AccountId = (short)(totalAccounts + 1), // Gán AccountId tự động
                 AccountName = newAccount.AccountName,
                 AccountEmail = newAccount.AccountEmail,
-                AccountPassword = "123", 
+                AccountPassword = newAccount.AccountPassword, 
                 AccountRole = newAccount.AccountRole
             };
 
