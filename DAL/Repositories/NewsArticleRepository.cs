@@ -58,7 +58,7 @@ namespace DAL.Repositories
 
             if (!string.IsNullOrEmpty(search))
             {
-                query = query.Where(n => n.NewsTitle.Contains(search) || n.NewsContent.Contains(search));
+                query = query.Where(n => n.NewsTitle.Contains(search));
             }
 
             return await query.ToListAsync();

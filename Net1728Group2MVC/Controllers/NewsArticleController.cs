@@ -39,32 +39,45 @@ namespace Net1728Group2MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewsArticle(NewsArticleControllerModel model)
         {
-            if (ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             var jsonString = HttpContext.Session.GetString("User");
             var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
             model.CreatedById = user.AccountId;
-            var news = _mapper.Map<NewsArticleVM>(model);         
+            var news = new NewsArticleVM
+            {
+                NewsArticleId = model.NewsArticleId,
+                NewsTitle = model.NewsTitle,
+                Headline = model.Headline,
+                NewsContent = model.NewsContent,
+                NewsSource = model.NewsSource,
+                CategoryId = model.CategoryId,
+                NewsStatus = model.NewsStatus,
+                CreatedById = model.CreatedById,
+                TagIds = model.TagIds
+            };
             await _newsArticleService.CreateNewsArticle(news);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("News", "Staff");
         }
         
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> UpdateNewsArticle(NewsArticleControllerModel model)
         {
-            if (ModelState.IsValid)
-            {
-                return View(model);
-            }
             var jsonString = HttpContext.Session.GetString("User");
             var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
             model.UpdatedById = user.AccountId;
-            var news = _mapper.Map<NewsArticleVM>(model);
+            var news = new NewsArticleVM
+            {
+                NewsArticleId = model.NewsArticleId,
+                NewsTitle = model.NewsTitle,
+                Headline = model.Headline,
+                NewsContent = model.NewsContent,
+                NewsSource = model.NewsSource,
+                CategoryId = model.CategoryId,
+                NewsStatus = model.NewsStatus,
+                UpdatedById = model.UpdatedById,
+                TagIds = model.TagIds
+            };
             await _newsArticleService.UpdateNewsArticle(news);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("News", "Staff");
         }
 
         [HttpDelete]
@@ -81,7 +94,7 @@ namespace Net1728Group2MVC.Controllers
                 return NotFound("News article is not found");
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("News", "Staff");
         }
 
         [HttpGet]
