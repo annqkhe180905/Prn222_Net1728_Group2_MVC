@@ -20,6 +20,28 @@ namespace Net1728Group2MVC.Middleware
                 var user = JsonConvert.DeserializeObject<AccountModel>(userJson);
                 context.Items["User"] = user; 
             }
+
+            var allowedRoutes = new[]
+            {
+                "/Auth/Login",
+                "/Home/Index"
+            };
+
+            bool isAllowedRoute = false;
+            foreach (var route in allowedRoutes)
+            {
+                if (context.Request.Path.StartsWithSegments(route))
+                {
+                    isAllowedRoute = true;
+                    break;
+                }
+            }
+            if (context.Items["User"] == null && !isAllowedRoute)
+            {
+                context.Response.Redirect("/Auth/Login");
+                return;
+            }
+
             await _next(context);
         }
     }
