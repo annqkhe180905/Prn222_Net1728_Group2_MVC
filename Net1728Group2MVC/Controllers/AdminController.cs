@@ -46,11 +46,14 @@ namespace Net1728Group2MVC.Controllers
         }
 
 
-        
-
         [HttpPost]
         public async Task<IActionResult> Create(AccountModel account)
         {
+            if (string.IsNullOrWhiteSpace(account.AccountPassword))
+            {
+                TempData["ErrorMessage"] = "Password is required for new accounts.";
+                return RedirectToAction("Account");
+            }
 
             if (!await _accountService.IsEmailUniqueAsync(account.AccountEmail))
             {
@@ -58,23 +61,25 @@ namespace Net1728Group2MVC.Controllers
                 return RedirectToAction("Account");
             }
 
-
             if (ModelState.IsValid)
             {
                 var systemAccountVM = new SystemAccountVM
                 {
-
                     AccountName = account.AccountName,
                     AccountEmail = account.AccountEmail,
-                    AccountPassword = account.AccountPassword,
-                    AccountRole = account.AccountRole 
+                    AccountPassword = account.AccountPassword, 
+                    AccountRole = account.AccountRole
                 };
 
                 await _accountService.CreateAccountAsync(systemAccountVM);
                 return RedirectToAction("Account");
             }
-            return RedirectToAction("r");
+
+            TempData["ErrorMessage"] = "Invalid input data!";
+            return RedirectToAction("Account");
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(short id)
@@ -96,13 +101,18 @@ namespace Net1728Group2MVC.Controllers
             return View(accountVM);
         }
 
+
         [HttpPost]
-        
         public async Task<IActionResult> Edit(AccountModel account)
         {
+            var existingAccount = await _accountService.GetAccountByIdAsync(account.AccountId ?? 0);
+            if (existingAccount == null)
+            {
+                return NotFound();
+            }
 
-            var existingAccount = await _accountService.GetAccountByEmailAsync(account.AccountEmail);
-            if (existingAccount != null && existingAccount.AccountId != account.AccountId)
+            var existingEmailAccount = await _accountService.GetAccountByEmailAsync(account.AccountEmail);
+            if (existingEmailAccount != null && existingEmailAccount.AccountId != account.AccountId)
             {
                 TempData["ErrorMessage"] = "Email already in use by another account!";
                 return RedirectToAction("Account");
@@ -115,14 +125,16 @@ namespace Net1728Group2MVC.Controllers
                     AccountId = (short)account.AccountId,
                     AccountName = account.AccountName,
                     AccountEmail = account.AccountEmail,
-                    AccountPassword = account.AccountPassword,
-                    AccountRole = account.AccountRole 
+                    AccountRole = account.AccountRole,
+                    AccountPassword = !string.IsNullOrWhiteSpace(account.AccountPassword)
+                        ? account.AccountPassword 
+                        : existingAccount.AccountPassword
                 };
-
 
                 await _accountService.UpdateAccountAsync(systemAccountVM);
                 return RedirectToAction("Account");
             }
+
             return View(account);
         }
 
