@@ -6,7 +6,7 @@ namespace Net1728Group2MVC.Controllers
     {
         public IActionResult News()
         {
-            return View();
+            return RedirectToAction("Index","Home");
         }
     }
 }
