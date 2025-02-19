@@ -18,17 +18,22 @@ namespace BLL.Services
     {
         private readonly INewsArticleRepository _newsArticleRepository;
         private readonly IMapper _mapper;
-        
-        public NewsArticleService (INewsArticleRepository newsArticleRepository, IMapper mapper)
+
+        public NewsArticleService(INewsArticleRepository newsArticleRepository, IMapper mapper)
         {
-            newsArticleRepository = _newsArticleRepository;
-            mapper = _mapper;
+            _newsArticleRepository = newsArticleRepository;
+            _mapper = mapper;
         }
 
-        public async Task<NewsArticle> CreateNewsArticle(NewsArticleRequestModel model)
+        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, string? createdBy)
+        {
+            return await _newsArticleRepository.SearchArticles(search, categoryId, tagIds, createdBy);
+        }
+
+        public async Task<NewsArticle> CreateNewsArticle(NewsArticleVM model)
         {
             var newsArticle = _mapper.Map<NewsArticle>(model);
-
+            model.CreatedDate = DateTime.Now;
             await _newsArticleRepository.CreateNewsArticle(newsArticle);
 
             return newsArticle;
@@ -44,19 +49,33 @@ namespace BLL.Services
             return await _newsArticleRepository.DeleteNewsArticle(deletedArticle);
         }
 
-        public async Task<IEnumerable<NewsArticle>> GetAllActiveAsync()
+        public async Task<IEnumerable<NewsArticle>> GetAllActiveArticles()
         {
             return await _newsArticleRepository.GetAllActiveArticles();
         }
 
-        public async Task<NewsArticle> GetNewsArticleByIdAsync(string id)
+        public async Task<NewsArticle> GetNewsArticleById(string id)
         {
             return await _newsArticleRepository.GetNewsArticleById(id);
         }
 
-        public async Task<NewsArticleRequestModel> UpdateNewsArticle(NewsArticleRequestModel news)
+        public async Task<IEnumerable<NewsArticle>> GetAllArticle()
         {
-            return null;
+            return await _newsArticleRepository.GetAllArticles();
         }
+
+        public async Task<NewsArticle> UpdateNewsArticle(NewsArticleVM news)
+        {
+            var updateArticle = await _newsArticleRepository.GetNewsArticleById(news.NewsArticleId);
+            if (updateArticle == null)
+            {
+                return null;
+            }
+            updateArticle = _mapper.Map(news, updateArticle);
+            updateArticle.ModifiedDate = DateTime.Now;
+            await _newsArticleRepository.UpdateNewsArticle(updateArticle);
+            return updateArticle;
+        }
+
     }
 }

@@ -10,10 +10,12 @@ namespace BLL.Interfaces
 {
     public interface INewsArticleService
     {
-        Task<IEnumerable<NewsArticle>> GetAllActiveAsync();
-        Task<NewsArticle> GetNewsArticleByIdAsync(string id);
-        Task<NewsArticle> CreateNewsArticle(NewsArticleRequestModel model);
-        Task<NewsArticleRequestModel> UpdateNewsArticle(NewsArticleRequestModel news);
+        Task<IEnumerable<NewsArticle>> GetAllActiveArticles();
+        Task<IEnumerable<NewsArticle>> GetAllArticle();
+        Task<NewsArticle> GetNewsArticleById(string id);
+        Task<NewsArticle> CreateNewsArticle(NewsArticleVM model);
+        Task<NewsArticle> UpdateNewsArticle(NewsArticleVM news);
         Task<bool> DeleteNewsArticle(string id);
+        Task<IEnumerable<NewsArticle>> SearchArticles (string search, int? categoryId, List<int>? tagIds, string? createdBy);
     }
 }

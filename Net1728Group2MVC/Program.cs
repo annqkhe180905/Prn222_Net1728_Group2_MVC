@@ -68,6 +68,9 @@ app.MapControllerRoute(
     name: "NewsManagement",
     pattern: "{controller=Staff}/{action=News}/{id?}");
 
+app.MapControllerRoute(
+    name: "NewsTagManagement",
+    pattern: "{controller=Staff}/{action=NewsTag}/{id?}");
 
 app.MapControllerRoute(
     name: "ProfileManagement",

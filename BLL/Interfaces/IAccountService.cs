@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using BLL.DTOs;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,22 @@ namespace BLL.Interfaces
     public interface IAccountService
     {
         public Task<SystemAccount> Login(string email, string password);
+
+        public Task<SystemAccount> GetAccountByIdAsync(short accountId);
+
+        Task UpdateAccountAsync(SystemAccountVM accountVM);
+        Task UpdateProfile(SystemAccountVM accountVM);
+
+        Task<List<SystemAccount>> GetAllAccountsAsync();
+
+        Task CreateAccountAsync(SystemAccountVM account);
+        Task DeleteAccountAsync(short id);
+        Task<bool> HasRelatedEntitiesAsync(short id);
+
+        Task<SystemAccount> GetAccountByEmailAsync(string email);
+        IEnumerable<SystemAccount> SearchAccounts(string name, int? role);
+
+        Task<bool> IsEmailUniqueAsync(string email);
+        Task<SystemAccount> DisableAccount(short id);
     }
 }

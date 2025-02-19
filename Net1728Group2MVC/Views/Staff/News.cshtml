@@ -1,5 +1,119 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Net1728Group2MVC.Models
 @{
+    ViewData["Title"] = "Manage News Articles";
 }
+@model NewsArticleControllerModel
+
+<div class="d-flex align-items-center gap-2 my-2 w-100 h-100">
+    <form class="d-flex h-100" method="get" action="@Url.Action("Index", "NewsArticle")">
+        <div class="input-group">
+            <input type="text" class="form-control" name="search" value="@Context.Request.Query["search"]" placeholder="Search articles..." />
+            <button class="btn btn-outline-dark btn-danger text-white fw-bold" type="submit">
+                Search
+            </button>
+        </div>
+    </form>
+
+    <button type="button" class="btn btn-danger h-100 rounded p-2" data-bs-toggle="modal" data-bs-target="#addNewsArticleModal">
+        <span class="text-white fs-6 fw-bold">Add News Article</span>
+    </button>
+</div>
+
+<div>
+    <table class="table table-hover">
+        <thead class="bg-black bg-opacity-10">
+            <tr>
+                <th class="p-3 text-center">Title</th>
+                <th class="p-3 text-center">Headline</th>
+                <th class="p-3 text-center">Status</th>
+                <th class="p-3 text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.NewsArticles != null)
+            {
+                @foreach (var article in Model.NewsArticles)
+                {
+                    <tr>
+                        <td class="text-center">@article.NewsTitle</td>
+                        <td class="text-center">@article.Headline</td>
+                        <td class="text-center">
+                            <span class="badge @(article.NewsStatus == true ? "bg-success" : "bg-danger")">
+                                @(article.NewsStatus == true ? "Published" : "Draft")
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-danger deleteNewsArticleButton" data-id="@article.NewsArticleId">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                            <button class="btn btn-primary editNewsArticleButton"
+                                    data-id="@article.NewsArticleId"
+                                    data-title="@article.NewsTitle"
+                                    data-headline="@article.Headline"
+                                    data-content="@article.NewsContent"
+                                    data-status="@article.NewsStatus"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editNewsArticleModal">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Add News Article -->
+<div class="modal fade" id="addNewsArticleModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Add News Article</h4>
+            </div>
+            <div class="modal-body">
+                <form id="newsArticleForm" method="post" action="@Url.Action("CreateNewsArticle", "NewsArticleController")">
+                    <label>Title</label>
+                    <input name="NewsTitle" class="form-control" required maxlength="200" />
+
+                    <label>Headline</label>
+                    <input name="Headline" class="form-control" required maxlength="150" />
+
+                    <label>Content</label>
+                    <textarea name="NewsContent" class="form-control"></textarea>
+
+                    <button type="submit" class="btn btn-primary mt-3">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update News Article -->
+<div class="modal fade" id="editNewsArticleModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Edit News Article</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editNewsArticleForm" method="post" action="@Url.Action("UpdateNewsArticle", "NewsArticleController")">
+                    <input type="hidden" name="NewsArticleId" id="editNewsId" />
+
+                    <label>Title</label>
+                    <input name="NewsTitle" id="editNewsTitle" class="form-control" required maxlength="200" />
+
+                    <label>Headline</label>
+                    <input name="Headline" id="editNewsHeadline" class="form-control" required maxlength="150" />
+
+                    <label>Content</label>
+                    <textarea name="NewsContent" id="editNewsContent" class="form-control"></textarea>
+
+                    <button type="submit" class="btn btn-primary mt-3">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/newsArticle.js"></script>

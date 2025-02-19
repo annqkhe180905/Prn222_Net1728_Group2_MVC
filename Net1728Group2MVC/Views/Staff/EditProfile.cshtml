@@ -1,0 +1,72 @@
+﻿@model Net1728Group2MVC.Models.AccountModel
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<style>
+    .container {
+        max-width: 600px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #ffffff, #f8f9fa);
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+            transform: scale(1.05);
+        }
+</style>
+
+<div class="container mt-5">
+    <h2 class="text-center">Edit Profile</h2>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <form asp-action="EditProfile" method="post">
+                    <input type="hidden" asp-for="AccountId" />
+
+                    <div class="form-group">
+                        <label for="AccountName">Name:</label>
+                        <input type="text" asp-for="AccountName" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AccountEmail">Email:</label>
+                        <input type="email" asp-for="AccountEmail" class="form-control" required readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AccountPassword">Password:</label>
+                        <input type="text" asp-for="AccountPassword" class="form-control" required />
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" >Save Changes</button>
+                        <a href="@Url.Action("Profile", "Staff")" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
