@@ -4,7 +4,7 @@ namespace Net1728Group2MVC.Models
 {
     public class AccountModel
     {
-        public short AccountId { get; set; }
+        public short? AccountId { get; set; }
 
         public string? AccountName { get; set; }
 

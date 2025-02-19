@@ -36,38 +36,33 @@ namespace DAL.Repositories
         public async Task<IEnumerable<NewsArticle>> GetAllActiveArticles()
         {
             return await _dbContext.NewsArticles
+                .Include(n => n.Category)
+                .Include(n => n.CreatedBy)
+                .Include(n => n.Tags)
                 .Where(n => n.NewsStatus == true)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<NewsArticle>> GetAllArticles()
         {
-            //return await _dbContext.NewsArticles.ToListAsync();
-
             return await _dbContext.NewsArticles
                 .Include(n => n.Category)
-                .Select(n => new
-                {
-                    NewsArticleId = n.NewsArticleId,
-                    NewsTitle = n.NewsTitle,
-                    Headline = n.Headline,
-                    NewsContent = n.NewsContent,
-                    NewsSource = n.NewsSource,
-                    CategoryId = n.CategoryId,
-                    CategoryName = n.Category != null ? n.Category.CategoryName : "Unknown",
-                    NewsStatus = n.NewsStatus,
-                    CreatedById = n.CreatedById,
-                    UpdatedById = n.UpdatedById,
-                    CreatedDate = n.CreatedDate,
-                    ModifiedDate = n.ModifiedDate,
-                    TagIds = n.Id.Select(t => t.TagId).ToList()
-                })
+                .Include(n => n.CreatedBy)
+                .Include(n => n.Tags)
                 .ToListAsync();
+        }
+
+        public Task<IEnumerable<NewsArticle>> GetAllArticle()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<NewsArticle> GetNewsArticleById(string id)
         {
-            return await _dbContext.NewsArticles.FindAsync(id);
+            return await _dbContext.NewsArticles.Include(n => n.Category)
+                .Include(n => n.CreatedBy).Include(n => n.Tags)
+                .FirstOrDefaultAsync(n => n.NewsArticleId == id);
+
         }
 
 
@@ -107,7 +102,7 @@ namespace DAL.Repositories
         {
             return await _dbContext.NewsArticles
                 .Include(n => n.Category)
-        .Include(n => n.CreatedBy)
+                .Include(n => n.CreatedBy)
                 .Where(n => n.CreatedDate >= startDate && n.CreatedDate <= endDate)
                 .ToListAsync();
         }
@@ -116,7 +111,7 @@ namespace DAL.Repositories
         {
             return await _dbContext.NewsArticles
                 .Include(n => n.Category)
-        .Include(n => n.CreatedBy)
+                .Include(n => n.CreatedBy)
                 .Where(n => n.CategoryId == categoryId && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
                 .ToListAsync();
         }
@@ -125,7 +120,7 @@ namespace DAL.Repositories
         {
             return await _dbContext.NewsArticles
                 .Include(n => n.Category)
-        .Include(n => n.CreatedBy)
+                .Include(n => n.CreatedBy)
                 .Where(n => n.NewsStatus == status && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
                 .ToListAsync();
         }
@@ -134,7 +129,7 @@ namespace DAL.Repositories
         {
             return await _dbContext.NewsArticles
                 .Include(n => n.Category)
-        .Include(n => n.CreatedBy)
+                .Include(n => n.CreatedBy)
                 .Where(n => n.CreatedById == userId && n.CreatedDate >= startDate && n.CreatedDate <= endDate)
                 .ToListAsync();
         }

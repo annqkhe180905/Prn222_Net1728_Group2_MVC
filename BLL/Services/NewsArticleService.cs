@@ -76,5 +76,6 @@ namespace BLL.Services
             await _newsArticleRepository.UpdateNewsArticle(updateArticle);
             return updateArticle;
         }
+
     }
 }

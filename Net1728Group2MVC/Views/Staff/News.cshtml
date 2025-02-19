@@ -95,18 +95,18 @@
 
                     <label>Category</label>
                     <select name="CategoryId" class="form-control">
-                        @foreach (var category in )
+@*                         @foreach (var category in )
                         {
                             <option value="@category.CategoryId">@category.CategoryName</option>
-                        }
+                        } *@
                     </select>
 
                     <label>Tags</label>
                     <select name="TagIds" multiple class="form-control">
-                        @foreach (var tag in Model)
+@*                         @foreach (var tag in Model)
                         {
                             <option value="@tag.TagId">@tag.TagName</option>
-                        }
+                        } *@
                     </select>
 
                     <button type="submit" class="btn btn-primary mt-3">Save</button>
@@ -138,18 +138,18 @@
 
                     <label>Category</label>
                     <select name="CategoryId" id="editNewsCategory" class="form-control">
-                        @foreach (var category in Model.NewsCategories)
+@*                         @foreach (var category in Model.NewsCategories)
                         {
                             <option value="@category.CategoryId">@category.CategoryName</option>
-                        }
+                        } *@
                     </select>
 
                     <label>Tags</label>
                     <select name="TagIds" id="editNewsTags" multiple class="form-control">
-                        @foreach (var tag in Model.NewsTags)
+@*                         @foreach (var tag in Model.NewsTags)
                         {
                             <option value="@tag.TagId">@tag.TagName</option>
-                        }
+                        } *@
                     </select>
 
                     <button type="submit" class="btn btn-primary mt-3">Save</button>

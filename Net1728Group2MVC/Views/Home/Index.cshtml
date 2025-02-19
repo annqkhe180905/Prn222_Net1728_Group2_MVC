@@ -1,9 +1,72 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@Model AccountModel
+@model NewsArticleControllerModel
 
-<div class="text-center">
-    <h1 class="display-4">@ViewBag.Message</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="datatable-container">
+    <table id="datatablesSimple" class="datatable-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Headline</th>
+                <th>Created Date</th>
+                <th>Source</th>
+                <th>Category</th>
+                <th>Created By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var article in Model.NewsArticles)
+            {
+                <tr>
+                    <td>@article.NewsArticleId</td>
+                    <td>@article.NewsTitle</td>
+                    <td>@article.Headline</td>
+                    <td>@article.CreatedDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@article.NewsSource</td>
+                    <td>@article.CategoryName</td> 
+                    <td>@article.CreatedBy</td> 
+                    <td>
+                        <button type="button" class="btn btn-danger h-100 rounded p-2" data-bs-toggle="modal" data-bs-target="#detailsModal"
+                                onclick="loadDetails('@article.NewsArticleId')">
+                            <span class="text-white fs-6 fw-bold">View Details</span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>
 </div>
+
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">News Article Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="newsDetails">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadDetails(newsArticleId) {
+        $.ajax({
+            url: '/Home/Detail', 
+            type: 'GET',
+            data: { id: newsArticleId },  
+            success: function (data) {
+                $('#newsDetails').html(data);  
+                $('#detailsModal').modal('show');
+            },
+            error: function () {
+                alert('Error loading details.');
+            }
+        });
+    }
+</script>
+

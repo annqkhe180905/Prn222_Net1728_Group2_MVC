@@ -5,5 +5,6 @@ namespace Net1728Group2MVC.Models
         public string? RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
     }
 }
