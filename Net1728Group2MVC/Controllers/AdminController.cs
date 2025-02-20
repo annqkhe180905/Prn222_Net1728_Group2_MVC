@@ -72,6 +72,7 @@ namespace Net1728Group2MVC.Controllers
                 };
 
                 await _accountService.CreateAccountAsync(systemAccountVM);
+                TempData["SuccessMessage"] = "Account created successfully!";
                 return RedirectToAction("Account");
             }
 
@@ -132,6 +133,7 @@ namespace Net1728Group2MVC.Controllers
                 };
 
                 await _accountService.UpdateAccountAsync(systemAccountVM);
+                TempData["SuccessMessage"] = "Account updated successfully!";
                 return RedirectToAction("Account");
             }
 
@@ -144,7 +146,22 @@ namespace Net1728Group2MVC.Controllers
         {
             Console.WriteLine($"Disabling account with ID: {id}");
             await _accountService.DisableAccount(id);
+            TempData["SuccessMessage"] = "Account disabled successfully!";
             return RedirectToAction("Account");
+        }
+
+        public IActionResult Search(string name, int? role)
+        {
+            var accounts = _accountService.SearchAccounts(name, role);
+            var accountModels = accounts.Select(account => new AccountModel
+            {
+                AccountId = account.AccountId,
+                AccountName = account.AccountName,
+                AccountEmail = account.AccountEmail,
+                AccountPassword = account.AccountPassword,
+                AccountRole = account.AccountRole
+            }).ToList();
+            return View("Account", accountModels);
         }
 
         public async Task<IActionResult> Report(DateTime? startDate, DateTime? endDate)

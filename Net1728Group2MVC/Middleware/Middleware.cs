@@ -51,6 +51,7 @@ namespace Net1728Group2MVC.Middleware
                 { 1, new[] { "/Staff", "/Staff/Category", "/Staff/Profile", "/Staff/News", "/Staff/NewsTag", "/Auth/Logout", 
                     "/NewsArticle", "/NewsTag", "/Category", } }, 
                 { 2, new[] { "/Lecturer", "/Lecturer/News", "/Auth/Logout" } }
+
             };
 
             if (user != null && roleBasedRoutes.ContainsKey(user.AccountRole))
