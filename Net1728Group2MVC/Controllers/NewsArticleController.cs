@@ -7,6 +7,7 @@ using Net1728Group2MVC.Models;
 using System.Security.Claims;
 using System.Text.Json;
 using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Net1728Group2MVC.Controllers
@@ -14,12 +15,14 @@ namespace Net1728Group2MVC.Controllers
     public class NewsArticleController : Controller
     {
         private readonly INewsArticleService _newsArticleService;
+        private readonly ITagService _tagService;
         private readonly IMapper _mapper;
 
-        public NewsArticleController(INewsArticleService newsArticleService, IMapper mapper)
+        public NewsArticleController(INewsArticleService newsArticleService, IMapper mapper, ITagService tagService)
         {
             _newsArticleService = newsArticleService;
             _mapper = mapper;
+            _tagService = tagService;
         }
 
         public async Task<IActionResult> Search(string? search, int? categoryId, List<int>? tagIds, short? createdBy)
@@ -37,24 +40,25 @@ namespace Net1728Group2MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewsArticle(NewsArticleControllerModel model)
+        public async Task<IActionResult> CreateNewsArticle(NewsArticleVM model)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("News", "Staff");
+            }
+
+            var existingArticle = await _newsArticleService.GetNewsArticleById(model.NewsArticleId);
+            if (existingArticle != null)
+            {
+                ModelState.AddModelError("NewsArticleId", "NewsArticleId already exists.");
+                return RedirectToAction("News", "Staff");
+            }
+
+
             var jsonString = HttpContext.Session.GetString("User");
             var user = JsonSerializer.Deserialize<SystemAccount>(jsonString);
             model.CreatedById = user.AccountId;
-            var news = new NewsArticleVM
-            {
-                NewsArticleId = model.NewsArticleId,
-                NewsTitle = model.NewsTitle,
-                Headline = model.Headline,
-                NewsContent = model.NewsContent,
-                NewsSource = model.NewsSource,
-                CategoryId = model.CategoryId,
-                NewsStatus = model.NewsStatus,
-                CreatedById = model.CreatedById,
-                TagIds = model.TagIds
-            };
-            await _newsArticleService.CreateNewsArticle(news);
+            await _newsArticleService.CreateNewsArticle(model);
             return RedirectToAction("News", "Staff");
         }
         
@@ -91,7 +95,7 @@ namespace Net1728Group2MVC.Controllers
             bool isDeleted = await _newsArticleService.DeleteNewsArticle(id);
             if (!isDeleted)
             {
-                return NotFound("News article is not found");
+                return NotFound("Cannot find this news!");
             }
 
             return RedirectToAction("News", "Staff");

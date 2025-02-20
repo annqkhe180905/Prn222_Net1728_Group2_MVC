@@ -26,12 +26,19 @@ namespace Net1728Group2MVC.Controllers
 
         public async Task<IActionResult> News(string? search)
         {
-            ViewBag.Header = "News Management";        
-            var newsArticleControllerModel = new NewsArticleControllerModel()
+            ViewBag.Header = "News Management";
+            var categories = await _categoryService.GetAllAsync(null) ?? new List<CategoryVM>();
+            var tags = await _tagService.GetAllTagsAsync(null) ?? new List<TagVM>();
+            var newsArticles = await _newsArticleService.GetAllArticle(search);
+
+            var viewModel = new NewsModel
             {
-                NewsArticles = await _newsArticleService.GetAllArticle(search)
+                Categories = categories,
+                Tags = tags,
+                NewsArticles = newsArticles
             };
-            return View(newsArticleControllerModel);
+
+            return View(viewModel);
         }
         public async Task<IActionResult> Category(string? search)
         {
