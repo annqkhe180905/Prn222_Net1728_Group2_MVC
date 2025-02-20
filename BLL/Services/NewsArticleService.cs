@@ -25,7 +25,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, string? createdBy)
+        public async Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, short? createdBy)
         {
             return await _newsArticleRepository.SearchArticles(search, categoryId, tagIds, createdBy);
         }
@@ -33,7 +33,7 @@ namespace BLL.Services
         public async Task<NewsArticle> CreateNewsArticle(NewsArticleVM model)
         {
             var newsArticle = _mapper.Map<NewsArticle>(model);
-            model.CreatedDate = DateTime.Now;
+            newsArticle.CreatedDate = DateTime.Now;
             await _newsArticleRepository.CreateNewsArticle(newsArticle);
 
             return newsArticle;
@@ -59,9 +59,15 @@ namespace BLL.Services
             return await _newsArticleRepository.GetNewsArticleById(id);
         }
 
-        public async Task<IEnumerable<NewsArticle>> GetAllArticle()
+        public async Task<IEnumerable<NewsArticle>> GetAllArticles()
         {
             return await _newsArticleRepository.GetAllArticles();
+        }
+
+        public async Task<IEnumerable<NewsArticleVM>> GetAllArticle(string? search)
+        {
+            var list = await _newsArticleRepository.GetAllArticle(search);
+            return _mapper.Map<IEnumerable<NewsArticleVM>>(list);
         }
 
         public async Task<NewsArticle> UpdateNewsArticle(NewsArticleVM news)
@@ -71,8 +77,8 @@ namespace BLL.Services
             {
                 return null;
             }
-            updateArticle = _mapper.Map(news, updateArticle);
             updateArticle.ModifiedDate = DateTime.Now;
+            updateArticle = _mapper.Map(news, updateArticle);
             await _newsArticleRepository.UpdateNewsArticle(updateArticle);
             return updateArticle;
         }

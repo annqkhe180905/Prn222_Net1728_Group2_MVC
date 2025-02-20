@@ -11,6 +11,7 @@ namespace DAL.Interfaces
     {
         Task<IEnumerable<NewsArticle>> GetAllActiveArticles();
         Task<IEnumerable<NewsArticle>> GetAllArticles();
+        Task<IEnumerable<NewsArticle>> GetAllArticle(string? search);
         Task<NewsArticle> GetNewsArticleById(string id);
         Task <NewsArticle> CreateNewsArticle(NewsArticle news);
         Task <NewsArticle> UpdateNewsArticle(NewsArticle news);
@@ -19,6 +20,6 @@ namespace DAL.Interfaces
         Task<List<NewsArticle>> GetNewsByStatusAndDate (bool status, DateTime startDate, DateTime endDate);
         Task<List<NewsArticle>> GetNewsByCategoryAndDate (int categoryId, DateTime startDate, DateTime endDate);
         Task<List<NewsArticle>> GetNewsByCreateByAndDate (int userId,  DateTime startDate, DateTime endDate);
-        Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, string? createdBy);
+        Task<IEnumerable<NewsArticle>> SearchArticles(string search, int? categoryId, List<int>? tagIds, short? createdBy);
     }
 }
